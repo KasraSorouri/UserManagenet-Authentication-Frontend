@@ -1,25 +1,61 @@
-import logo from './logo.svg';
-import './App.css';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route
+} from 'react-router-dom'
+
+import Navigation from './modules/puplic/components/Navigation'
+import HomePage from './modules/puplic/components/HomePage'
+import SignIn from './modules/usersAndAuthentications/Components/Login'
+import SoftwareCompany from './modules/puplic/components/SoftwareCompany'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>manufacturing App</h1>
+      <Router>
+        <Navigation />
+        <Routes>
+          <Route path='/' element={<HomePage />} />
+          <Route path='/login' element={<SignIn />} />
+        </Routes>
+      </Router>
+      <footer>
+        <SoftwareCompany />
+      </footer>
     </div>
-  );
+  )
 }
 
-export default App;
+/*
+
+import { Container } from '@mui/material'
+
+import Navigation from './components/Navigation'
+import AboutApp from './components/AboutApp'
+import TripsPage from './components/TripsPage'
+import StationsPage from './components/StationsPage'
+import StationInfo from './components/StationInfo'
+import UploadFiles from './components/UploadFiles'
+
+function App() {
+
+  return (
+    <div>
+      <Container maxWidth='xl'>
+        <Router>
+          <Navigation />
+          <Routes>
+            <Route path='/' element={<AboutApp />} />
+            <Route path='/trips' element={<TripsPage />} />
+            <Route path='/stations' element={<StationsPage />} />
+            <Route path='/stationInfo/' element={<StationInfo />} />
+            <Route path='/uploadFiles' element={<UploadFiles />} />
+          </Routes>
+        </Router>
+      </Container>
+    </div>
+  )
+}
+*/
+export default App
