@@ -12,9 +12,9 @@ import SoftwareCompany from './modules/puplic/components/SoftwareCompany'
 function App() {
   return (
     <div>
-      <h1>manufacturing App</h1>
       <Router>
         <Navigation />
+        <h1>manufacturing App</h1>
         <Routes>
           <Route path='/' element={<HomePage />} />
           <Route path='/login' element={<SignIn />} />

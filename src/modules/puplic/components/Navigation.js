@@ -1,9 +1,16 @@
 import { Link } from 'react-router-dom'
+
 import { AppBar, Toolbar, Button, Grid, Typography } from '@mui/material'
 import HomeIcon from '@mui/icons-material/Home'
 import ConfigIcon from '@mui/icons-material/SettingsSuggest'
 
+import UserProfile from './UserProfile'
+import { useUserValue } from '../contexts/userContext'
+
 const Navigation = () => {
+
+  const user = useUserValue()
+
   return (
     <AppBar position='sticky'>
       <Toolbar>
@@ -49,22 +56,24 @@ const Navigation = () => {
             </Button>
           </Grid>
           <Grid item>
-            <Button color='inherit' component={Link} to='/login'>
-              <Typography
-                variant='h6'
-                noWrap
-                href='/'
-                sx={{
-                  mr: 2,
-                  fontFamily: 'monospace',
-                  fontWeight: 700,
-                  color: 'inherit',
-                  textDecoration: 'none',
-                }}
-              >
+            { user ? <UserProfile user={user} /> :
+              <Button color='inherit' component={Link} to='/login'>
+                <Typography
+                  variant='h6'
+                  noWrap
+                  href='/'
+                  sx={{
+                    mr: 2,
+                    fontFamily: 'monospace',
+                    fontWeight: 700,
+                    color: 'inherit',
+                    textDecoration: 'none',
+                  }}
+                >
                 login
-              </Typography>
-            </Button>
+                </Typography>
+              </Button>
+            }
           </Grid>
         </Grid>
       </Toolbar>

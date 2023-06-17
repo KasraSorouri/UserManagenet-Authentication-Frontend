@@ -1,4 +1,5 @@
-import * as React from 'react'
+import { useNavigate } from 'react-router-dom'
+
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import CssBaseline from '@mui/material/CssBaseline'
@@ -14,23 +15,27 @@ import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 
 import loginServices from '../services/login'
+import { useUserSet } from '../../puplic/contexts/userContext'
 
 const defaultTheme = createTheme()
 
 const SignIn = () => {
-  const handleSubmit = (event) => {
+
+  const navigate = useNavigate()
+  const setUser = useUserSet()
+
+  const handleSubmit = async(event) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
-    console.log({
-      username: data.get('username'),
-      password: data.get('password'),
-    })
     const credentials = {
       username: data.get('username'),
       password: data.get('password'),
     }
-    console.log('credentials ->', credentials)
-    loginServices.login(credentials)
+    const user = await loginServices.login(credentials)
+    //console.log('user ->', user.data)
+    window.localStorage.setItem('Manufacturing_logedUser', JSON.stringify(user))
+    setUser(user.data)
+    navigate('/')
   }
 
   return (
