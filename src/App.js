@@ -8,6 +8,8 @@ import Navigation from './modules/puplic/components/Navigation'
 import HomePage from './modules/puplic/components/HomePage'
 import SignIn from './modules/usersAndAuthentications/Components/Login'
 import SoftwareCompany from './modules/puplic/components/SoftwareCompany'
+import ConfigurationPage from './modules/puplic/components/ConfigurationPage'
+import UserManagement from './modules/usersAndAuthentications/Components/UserManagement'
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
         <Routes>
           <Route path='/' element={<HomePage />} />
           <Route path='/login' element={<SignIn />} />
+          <Route path='/Config' element={<ConfigurationPage />} />
+          <Route path='/userManagement'element={<UserManagement />} />
         </Routes>
       </Router>
       <footer>
@@ -27,35 +31,4 @@ function App() {
   )
 }
 
-/*
-
-import { Container } from '@mui/material'
-
-import Navigation from './components/Navigation'
-import AboutApp from './components/AboutApp'
-import TripsPage from './components/TripsPage'
-import StationsPage from './components/StationsPage'
-import StationInfo from './components/StationInfo'
-import UploadFiles from './components/UploadFiles'
-
-function App() {
-
-  return (
-    <div>
-      <Container maxWidth='xl'>
-        <Router>
-          <Navigation />
-          <Routes>
-            <Route path='/' element={<AboutApp />} />
-            <Route path='/trips' element={<TripsPage />} />
-            <Route path='/stations' element={<StationsPage />} />
-            <Route path='/stationInfo/' element={<StationInfo />} />
-            <Route path='/uploadFiles' element={<UploadFiles />} />
-          </Routes>
-        </Router>
-      </Container>
-    </div>
-  )
-}
-*/
 export default App
