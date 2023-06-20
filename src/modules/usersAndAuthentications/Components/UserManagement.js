@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useQuery, useMutation } from 'react-query'
+import { useQuery, useMutation, useQueryClient } from 'react-query'
 import {
   Grid,
   Button,
@@ -16,19 +16,45 @@ import UserList from './UsersList'
 import RoleList from './RoleList'
 import RightList from './RightLists'
 import AddRole from './AddRole'
+import AddRight from './AddRight'
 
 const UserManagement = () => {
 
   const [ showNewRole, setShowNewRole ] = useState(false)
+  const [ showNewRight, setShowNewRight ] = useState(false)
 
-  const newRoleMutation = useMutation(roleServices.createRole)
+
+  const queryClient = useQueryClient()
+
+  const newRoleMutation = useMutation(roleServices.createRole, {
+    onSuccess: (newRole) => {
+      const roles = queryClient.getQueryData('roles')
+      queryClient.setQueryData('roles', roles.concat(newRole))
+    }
+  })
+
+  const newRightMutation = useMutation(rightServices.createRight, {
+    onSuccess: (newRight) => {
+      const roles = queryClient.getQueryData('rights')
+      queryClient.setQueryData('rights', roles.concat(newRight))
+    }
+  })
+
   const userResults = useQuery('users',userServices.getUsers)
   const roleResults = useQuery('roles',roleServices.getRoles)
   const rightResults = useQuery('rights',rightServices.getRights)
 
+  console.log('**** rights  ->', rightResults)
+
+
   const createRole = (newRole) => {
     console.log('new role ->', newRole)
     newRoleMutation.mutate(newRole)
+  }
+
+  const createRight = (newRight) => {
+    console.log('new right ->', newRight)
+    newRightMutation.mutate(newRight)
   }
 
   const closeHandler = () => {
@@ -52,7 +78,7 @@ const UserManagement = () => {
                 </Paper>
                 <Paper>
                   { rightResults.isLoading && <div>Loading ...</div>}
-                  { rightResults.data && <RightList rights={rightResults.data} />}
+                  { rightResults.data && <RightList rights={rightResults.data} displayForm={setShowNewRight}/>}
                 </Paper>
               </Stack>
             </Grid>
@@ -62,9 +88,10 @@ const UserManagement = () => {
       </Grid>
       <Grid item xs={7}>
         <Paper>
+          <Button onClick={closeHandler} >close</Button>
           <ManageAccountsIcon />
           { showNewRole && <AddRole addNewRole={createRole} displayForm={setShowNewRole} /> }
-          <Button onClick={closeHandler} >close</Button>
+          { showNewRight && <AddRight addNewRight={createRight} displayForm={setShowNewRight} /> }
         </Paper>
       </Grid>
     </Grid>

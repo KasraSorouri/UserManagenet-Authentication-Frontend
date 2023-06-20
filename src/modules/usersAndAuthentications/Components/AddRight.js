@@ -4,62 +4,58 @@ import {
   TextField,
   Box,
   Typography,
-  FormControlLabel,
-  Checkbox,
   Button,
   Paper
 } from '@mui/material'
 
-const AddRole = ({ addNewRole, displayForm }) => {
+const AddRight = ({ addNewRight, displayForm }) => {
 
-  const [ formValues, setFormValues ] = useState({ roleName:'', active: true })
+  const [ formValues, setFormValues ] = useState({ right:'', relatedModule: '' })
 
   const handleChange = (event) => {
-    const { name, value, checked } = event.target
-    const newValue = name === 'active' ? checked : value
+    const { name, value } = event.target
 
     setFormValues((prevValues) => ({
       ...prevValues,
-      [name]: newValue,
+      [name]: value,
     }))
   }
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    addNewRole(formValues)
+    console.log('** ** add right ->', formValues)
+    addNewRight(formValues)
     setFormValues({
-      roleName: '',
-      active: true,
+      right: '',
+      relatedModule: '',
     })
   }
 
   return(
     <Paper elevation={5} sx={{ margin: 2, borderRadius: 3 }}>
-      <Typography variant='subtitle1'>Add New Role</Typography>
+      <Typography variant='subtitle1'>Add New Right</Typography>
       <form onSubmit={handleSubmit} >
         <Box display='flex' flexDirection='row' alignItems='center' justifyContent='space-evenly'
           border={'solid'} borderColor={'#1976d2'} borderRadius={3}  margin={1} >
           <TextField
-            label='Role'
-            name='roleName'
-            value={formValues.roleName}
+            label='Right'
+            name='right'
+            value={formValues.right}
             onChange={handleChange}
             margin='dense'
             variant='outlined'
             size='small'
             required
           />
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={formValues.checked}
-                defaultChecked={true}
-                onChange={handleChange}
-                name='active'
-                color='primary'
-              />
-            }
-            label="Active"
+          <TextField
+            label='Related Module'
+            name='relatedModule'
+            value={formValues.relatedModule}
+            onChange={handleChange}
+            margin='dense'
+            variant='outlined'
+            size='small'
+            required
           />
           <Button type="submit" variant="contained" color="primary">
           Submit
@@ -73,4 +69,4 @@ const AddRole = ({ addNewRole, displayForm }) => {
   )
 }
 
-export default AddRole
+export default AddRight

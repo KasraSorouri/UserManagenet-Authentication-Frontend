@@ -17,9 +17,7 @@ import {
   Typography,
 } from '@mui/material'
 
-
 import AddIcon from '@mui/icons-material/Add'
-
 import { visuallyHidden } from '@mui/utils'
 
 import TablePaginationActions from '../../../utils/tablePaginationActions'
@@ -134,11 +132,11 @@ const RoleList = ({ roles, displayForm }) => {
               { roles.map((role) => {
                 return(
                   <TableRow hover role='checkbox' tabIndex={-1} key={role.id} onClick={ roleFilterHandler } >
-                    <TableCell align='left'  >
+                    <TableCell align='left'>
                       {role.roleName}
                     </TableCell>
-                    <TableCell align='center'  >
-                      <Checkbox checked={role.active} />
+                    <TableCell align='center' >
+                      <Checkbox checked={role.active} style={{ height: '16px', width: '16px' }} />
                     </TableCell>
                   </TableRow>
                 )

@@ -12,16 +12,19 @@ import {
   Box,
   TableRow,
   Stack,
-  Typography } from '@mui/material'
+  IconButton,
+  Typography,
+} from '@mui/material'
 
+import AddIcon from '@mui/icons-material/Add'
 import { visuallyHidden } from '@mui/utils'
 
 import TablePaginationActions from '../../../utils/tablePaginationActions'
 import Notification from '../../../utils/Notification'
 
-const RightList = ({ rights }) => {
+const RightList = ({ rights, displayForm }) => {
 
-  console.log('user list ->', rights)
+  console.log('rights list ->', rights)
 
   const [ filteredRights, setFilteredRights ] = useState([])
   const [ page, setPage ] = useState(0)
@@ -33,6 +36,10 @@ const RightList = ({ rights }) => {
 
   const rightFilterHandler = () => {
     return setFilteredRights([])
+  }
+
+  const addNewRight = () => {
+    displayForm(true)
   }
 
   const columnHeader = [
@@ -48,6 +55,16 @@ const RightList = ({ rights }) => {
     }
     return (
       <TableHead>
+        <TableRow style={{ height: '8px', }} >
+          <TableCell colSpan={2} sx={{ backgroundColor: '#1976d2', color: 'white', fontWeight: 'bold' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Typography align='center'>RIGHT LIST</Typography>
+              <IconButton onClick={addNewRight}>
+                <AddIcon />
+              </IconButton>
+            </div>
+          </TableCell>
+        </TableRow>
         <TableRow>
           {columnHeader.map((column) => (
             <TableCell
@@ -113,7 +130,7 @@ const RightList = ({ rights }) => {
                     <TableCell align='left' >
                       {right.right}
                     </TableCell>
-                    <TableCell align='left' >
+                    <TableCell align='center' >
                       {right.relatedModule}
                     </TableCell>
                   </TableRow>

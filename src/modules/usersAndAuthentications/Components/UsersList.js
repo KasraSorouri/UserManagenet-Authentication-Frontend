@@ -126,7 +126,7 @@ const UserList = ({ users }) => {
                       {user.username}
                     </TableCell>
                     <TableCell align='center' >
-                      <Checkbox checked={user.active} />
+                      <Checkbox checked={user.active} style={{ height: '16px', width: '16px' }}/>
                     </TableCell>
                   </TableRow>
                 )

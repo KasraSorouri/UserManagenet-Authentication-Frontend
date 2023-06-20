@@ -4,7 +4,6 @@ import { api_url } from '../../../configs/config'
 
 const getUsers = async() => {
   const res = await axios.get(`${api_url}/auth/user`)
-  console.log('uesr url ->',`${api_url}/auth/user` )
   return res.data
 }
 

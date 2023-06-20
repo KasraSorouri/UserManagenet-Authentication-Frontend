@@ -13,8 +13,6 @@ const createRole = async(roleData) => {
   const config = {
     headers: { Authorization: token },
   }
-  console.log(' config ->', config)
-  console.log(' role data ->', roleData)
 
   try {
     const res = await axios.post(`${api_url}/auth/role`, roleData, config)
