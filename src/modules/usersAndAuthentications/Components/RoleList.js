@@ -33,7 +33,7 @@ const RoleList = ({ roles, displayForm }) => {
 
   const [ filteredRoles, setFilteredRoles ] = useState([])
   const [ page, setPage ] = useState(0)
-  const [ rows, setRows ] = useState(10)
+  //const [ rows, setRows ] = useState(5)
   const [ sort, setSort ] = useState({ sortItem: 'stationId' , sortOrder: 1 })
   //const [ filterParameters, setFilterParameters ] = useState()
   const order = sort.sortOrder === 1 ? 'asc' : 'desc'
@@ -65,7 +65,7 @@ const RoleList = ({ roles, displayForm }) => {
           <TableCell colSpan={2} sx={{ backgroundColor: '#1976d2', color: 'white', fontWeight: 'bold' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <Typography align='center'>ROLES LIST</Typography>
-              <IconButton onClick={addNewRole}>
+              <IconButton onClick={addNewRole} style={{ height: '16px', width: '16px', color:'white' }}>
                 <AddIcon />
               </IconButton>
             </div>
@@ -145,13 +145,13 @@ const RoleList = ({ roles, displayForm }) => {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[10, 25, 50]}
+          rowsPerPageOptions={[5]}
           component='div'
           count={roles.length}
-          rowsPerPage={rows}
+          rowsPerPage={5}
           page={page}
           onPageChange={(event, newPage) => setPage(newPage)}
-          onRowsPerPageChange={(event) => setRows(event.target.value)}
+          //onRowsPerPageChange={(event) => setRows(event.target.value)}
           ActionsComponent={TablePaginationActions}
         />
       </Paper>

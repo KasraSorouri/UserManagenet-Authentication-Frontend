@@ -13,15 +13,18 @@ import {
   TableRow,
   Stack,
   Checkbox,
-//  Typography
+  Typography,
+  IconButton
 } from '@mui/material'
 
 import { visuallyHidden } from '@mui/utils'
 
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
+
 import TablePaginationActions from '../../../utils/tablePaginationActions'
 import Notification from '../../../utils/Notification'
 
-const UserList = ({ users }) => {
+const UserList = ({ users, displayForm }) => {
 
   console.log('user list ->', users)
 
@@ -35,6 +38,10 @@ const UserList = ({ users }) => {
 
   const userFilterHandler = () => {
     return setFilteredUsers([])
+  }
+
+  const addNewUser = () => {
+    displayForm(true)
   }
 
   const columnHeader = [
@@ -53,7 +60,14 @@ const UserList = ({ users }) => {
     return (
       <TableHead>
         <TableRow>
-          <TableCell colSpan={4} sx={{ backgroundColor: '#1976d2', color: 'white', fontWeight:'bold' }} align='center'>USERS LIST</TableCell>
+          <TableCell colSpan={4} sx={{ backgroundColor: '#1976d2', color: 'white', fontWeight: 'bold' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Typography align='center'>USER LIST</Typography>
+              <IconButton onClick={addNewUser} style={{ height: '16px', width: '16px', color:'white' }}>
+                <PersonAddAlt1Icon  />
+              </IconButton>
+            </div>
+          </TableCell>
         </TableRow>
         <TableRow>
           {columnHeader.map((column) => (

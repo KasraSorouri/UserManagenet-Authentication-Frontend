@@ -33,10 +33,18 @@ const AddRight = ({ addNewRight, displayForm }) => {
 
   return(
     <Paper elevation={5} sx={{ margin: 2, borderRadius: 3 }}>
-      <Typography variant='subtitle1'>Add New Right</Typography>
+      <Box display='flex' justifyContent='space-between' alignItems='center'
+        border={'solid'} borderColor={'#1976d270'} borderRadius={3}  margin={0}
+        bgcolor={'#1976d270'}
+      >
+        <Typography variant='h6' marginLeft={2}  >Add New Right</Typography>
+        <Button variant='contained' onClick={() => displayForm(false)}>
+          close
+        </Button>
+      </Box>
       <form onSubmit={handleSubmit} >
-        <Box display='flex' flexDirection='row' alignItems='center' justifyContent='space-evenly'
-          border={'solid'} borderColor={'#1976d2'} borderRadius={3}  margin={1} >
+        <Box display='flex' flexDirection='row' alignItems='center'
+          border={'solid'} borderColor={'#1976d2'} borderRadius={3} >
           <TextField
             label='Right'
             name='right'
@@ -46,6 +54,7 @@ const AddRight = ({ addNewRight, displayForm }) => {
             variant='outlined'
             size='small'
             required
+            sx={{ marginLeft: 2 }}
           />
           <TextField
             label='Related Module'
@@ -56,15 +65,13 @@ const AddRight = ({ addNewRight, displayForm }) => {
             variant='outlined'
             size='small'
             required
+            sx={{ marginLeft: 2 }}
           />
-          <Button type="submit" variant="contained" color="primary">
+          <Button type="submit" variant="contained" color="primary" sx={{ marginLeft: 2 }} >
           Submit
           </Button>
         </Box>
       </form>
-      <Box margin={1} >
-        <Button fullWidth variant='contained' onClick={() => displayForm(false)} sx={{ marginBottom: 2 }}>close</Button>
-      </Box>
     </Paper>
   )
 }

@@ -17,9 +17,11 @@ import RoleList from './RoleList'
 import RightList from './RightLists'
 import AddRole from './AddRole'
 import AddRight from './AddRight'
+import AddUser from './AddUser'
 
 const UserManagement = () => {
 
+  const [ showNewUser, setShowNewUser ] = useState(false)
   const [ showNewRole, setShowNewRole ] = useState(false)
   const [ showNewRight, setShowNewRight ] = useState(false)
 
@@ -40,6 +42,14 @@ const UserManagement = () => {
     }
   })
 
+  const newUserMutation = useMutation(userServices.createUser, {
+    onSuccess: (newUser) => {
+      const users = queryClient.getQueryData('users')
+      queryClient.setQueryData('users', users.concat(newUser))
+    }
+  })
+
+
   const userResults = useQuery('users',userServices.getUsers)
   const roleResults = useQuery('roles',roleServices.getRoles)
   const rightResults = useQuery('rights',rightServices.getRights)
@@ -57,6 +67,11 @@ const UserManagement = () => {
     newRightMutation.mutate(newRight)
   }
 
+  const createUser = (newUser) => {
+    console.log('***** new user ->', newUser)
+    newUserMutation.mutate(newUser)
+  }
+
   const closeHandler = () => {
     console.log('close')
   }
@@ -68,7 +83,7 @@ const UserManagement = () => {
           <Grid container spacing={2} >
             <Grid item xs={7}>
               { userResults.isLoading && <div>Loading ...</div>}
-              { userResults.data && <UserList users={userResults.data} />}
+              { userResults.data && <UserList users={userResults.data} displayForm={setShowNewUser}/>}
             </Grid>
             <Grid item xs={5}>
               <Stack direction={'column'}>
@@ -90,8 +105,10 @@ const UserManagement = () => {
         <Paper>
           <Button onClick={closeHandler} >close</Button>
           <ManageAccountsIcon />
-          { showNewRole && <AddRole addNewRole={createRole} displayForm={setShowNewRole} /> }
+          { showNewRole && <AddRole addNewRole={createRole} displayForm={setShowNewRole} rightList={rightResults.data}/> }
           { showNewRight && <AddRight addNewRight={createRight} displayForm={setShowNewRight} /> }
+          { showNewUser && <AddUser addNewUser={createUser} displayForm={setShowNewUser} roleList={roleResults.data.filter((role) => role.active)} /> }
+
         </Paper>
       </Grid>
     </Grid>
