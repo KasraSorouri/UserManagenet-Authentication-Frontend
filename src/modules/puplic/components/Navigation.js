@@ -5,11 +5,12 @@ import HomeIcon from '@mui/icons-material/Home'
 import ConfigIcon from '@mui/icons-material/SettingsSuggest'
 
 import UserProfile from './UserProfile'
-import { useUserValue } from '../contexts/userContext'
 
-const Navigation = () => {
 
-  const user = useUserValue()
+const Navigation = ({ user }) => {
+
+
+  console.log(' ** navi  *user ->', user)
 
   return (
     <AppBar position='sticky'>

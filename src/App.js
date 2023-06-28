@@ -11,12 +11,23 @@ import SoftwareCompany from './modules/puplic/components/SoftwareCompany'
 import ConfigurationPage from './modules/puplic/components/ConfigurationPage'
 import UserManagement from './modules/usersAndAuthentications/Components/UserManagement'
 
+import { useUserValue, useUserSet  } from './modules/puplic/contexts/userContext'
+import { useEffect } from 'react'
+
 function App() {
+
+  const setUser = useUserSet()
+  const user = useUserValue()
+
+  useEffect(() => {
+    const logedUser = window.localStorage.getItem('Manufacturing_logedUser')
+    logedUser && setUser(JSON.parse(logedUser).data)
+  },[])
+
   return (
     <div>
       <Router>
-        <Navigation />
-        <h1>manufacturing App</h1>
+        <Navigation user={user} />
         <Routes>
           <Route path='/' element={<HomePage />} />
           <Route path='/login' element={<SignIn />} />

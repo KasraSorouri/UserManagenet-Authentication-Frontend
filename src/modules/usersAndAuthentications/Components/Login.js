@@ -32,10 +32,11 @@ const SignIn = () => {
       password: data.get('password'),
     }
     const user = await loginServices.login(credentials)
-    //console.log('user ->', user.data)
-    window.localStorage.setItem('Manufacturing_logedUser', JSON.stringify(user))
-    setUser(user.data)
-    navigate('/')
+    if (user) {
+      window.localStorage.setItem('Manufacturing_logedUser', JSON.stringify(user))
+      setUser(user.data)
+      navigate('/')
+    }
   }
 
   return (

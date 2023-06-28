@@ -5,7 +5,6 @@ const login = async(credentials) => {
   const { username, password } = credentials
   try {
     const result = await axios.post(`${api_url}/auth/login`,  { username, password })
-    console.log('result ->', result)
     return result
   } catch (err) {
     console.log('err ->', err)
