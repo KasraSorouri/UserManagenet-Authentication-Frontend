@@ -24,14 +24,9 @@ import TablePaginationActions from '../../../utils/tablePaginationActions'
 import Notification from '../../../utils/Notification'
 
 
+const RoleList = ({ roles, displayRoleForm, selectRole }) => {
 
-
-
-const RoleList = ({ roles, displayForm }) => {
-
-  console.log('role list ->', roles)
-
-  const [ filteredRoles, setFilteredRoles ] = useState([])
+  //const [ filteredRoles, setFilteredRoles ] = useState([])
   const [ page, setPage ] = useState(0)
   //const [ rows, setRows ] = useState(5)
   const [ sort, setSort ] = useState({ sortItem: 'stationId' , sortOrder: 1 })
@@ -39,12 +34,23 @@ const RoleList = ({ roles, displayForm }) => {
   const order = sort.sortOrder === 1 ? 'asc' : 'desc'
   const orderBy = sort.sortItem
 
-  const roleFilterHandler = () => {
-    return setFilteredRoles([])
+  const filteredRoles = []
+
+  const showEditRole = (id) => {
+    const roleData = roles.filter((r) => r.id === id )[0]
+    console.log('**** user list * userData ->', roleData)
+    selectRole(roleData)
+    displayRoleForm({ show: true, formType: 'EDIT' })
   }
 
   const addNewRole = () => {
-    displayForm(true)
+    const blanklRole = {
+      roleName:'',
+      active: true,
+      rights:[]
+    }
+    selectRole(blanklRole)
+    displayRoleForm({ show: true, formType: 'ADD' })
   }
 
 
@@ -131,7 +137,7 @@ const RoleList = ({ roles, displayForm }) => {
             <TableBody>
               { roles.map((role) => {
                 return(
-                  <TableRow hover role='checkbox' tabIndex={-1} key={role.id} onClick={ roleFilterHandler } >
+                  <TableRow hover role='checkbox' tabIndex={-1} key={role.id} onClick={() => showEditRole(role.id)} >
                     <TableCell align='left'>
                       {role.roleName}
                     </TableCell>

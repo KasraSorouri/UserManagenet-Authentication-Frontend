@@ -15,19 +15,23 @@ import rightServices from '../services/right'
 import UserList from './UsersList'
 import RoleList from './RoleList'
 import RightList from './RightLists'
-import AddRole from './AddRole'
+import RoleForm from './RoleForm'
 import AddRight from './AddRight'
-import AddUser from './AddUser'
+import UserForm from './UserForm'
 
 const UserManagement = () => {
 
-  const [ showNewUser, setShowNewUser ] = useState(false)
-  const [ showNewRole, setShowNewRole ] = useState(false)
+  const [ showUserForm, setShowUserForm ] = useState({ show: false, formType: '' })
+  const [ showRoleForm, setShowRoleForm ] = useState({ show: false, formType: '' })
   const [ showNewRight, setShowNewRight ] = useState(false)
 
+  const [ selectedUser, setSelectedUser ] = useState(null)
+  const [ selectedRole, setSelectedRole ] = useState(null)
 
+  // Query implementation
   const queryClient = useQueryClient()
 
+  // Add New Opjects
   const newRoleMutation = useMutation(roleServices.createRole, {
     onSuccess: (newRole) => {
       const roles = queryClient.getQueryData('roles')
@@ -43,23 +47,45 @@ const UserManagement = () => {
   })
 
   const newUserMutation = useMutation(userServices.createUser, {
-    onSuccess: (newUser) => {
-      const users = queryClient.getQueryData('users')
-      queryClient.setQueryData('users', users.concat(newUser))
+    onSuccess: () => {
+      queryClient.invalidateQueries('users')
     }
   })
 
+  // Edit Objects
+  const editUserMutation = useMutation(userServices.editUser,{
+    onSuccess: () => {
+      queryClient.invalidateQueries('users')
 
-  const userResults = useQuery('users',userServices.getUsers)
-  const roleResults = useQuery('roles',roleServices.getRoles)
-  const rightResults = useQuery('rights',rightServices.getRights)
+    //  const users = queryClient.getQueryData('users')
+    //  queryClient.setQueryData('users', [ ...users.filter(user => user.id !== editedUser.id), editedUser])
+    }
+  })
 
-  console.log('**** rights  ->', rightResults)
+  const editRoleMutation = useMutation(roleServices.editRole,{
+    onSuccess: () => {
+      queryClient.invalidateQueries('roles')
+
+    //  const users = queryClient.getQueryData('users')
+    //  queryClient.setQueryData('users', [ ...users.filter(user => user.id !== editedUser.id), editedUser])
+    }
+  })
+
+  // Get Objects
+  const userResults = useQuery('users',userServices.getUsers, { refetchOnWindowFocus: false })
+  const roleResults = useQuery('roles',roleServices.getRoles, { refetchOnWindowFocus: false })
+  const rightResults = useQuery('rights',rightServices.getRights, { refetchOnWindowFocus: false })
 
 
-  const createRole = (newRole) => {
-    console.log('new role ->', newRole)
-    newRoleMutation.mutate(newRole)
+  const handleRoleFormSubmit = (newRoleData) => {
+    console.log('***** new role ->', newRoleData)
+    if (showRoleForm.formType === 'ADD') {
+      newRoleMutation.mutate(newRoleData)
+    }
+
+    if (showRoleForm.formType === 'EDIT') {
+      editRoleMutation.mutate(newRoleData)
+    }
   }
 
   const createRight = (newRight) => {
@@ -67,9 +93,15 @@ const UserManagement = () => {
     newRightMutation.mutate(newRight)
   }
 
-  const createUser = (newUser) => {
-    console.log('***** new user ->', newUser)
-    newUserMutation.mutate(newUser)
+  const handleUserFormSubmit = (newUserData) => {
+    console.log('***** new user ->', newUserData)
+    if (showUserForm.formType === 'ADD') {
+      newUserMutation.mutate(newUserData)
+    }
+
+    if (showUserForm.formType === 'EDIT') {
+      editUserMutation.mutate(newUserData)
+    }
   }
 
   const closeHandler = () => {
@@ -83,13 +115,13 @@ const UserManagement = () => {
           <Grid container spacing={2} >
             <Grid item xs={7}>
               { userResults.isLoading && <div>Loading ...</div>}
-              { userResults.data && <UserList users={userResults.data} displayForm={setShowNewUser}/>}
+              { userResults.data && <UserList users={userResults.data} displayUserForm={setShowUserForm} selectUser={setSelectedUser} />}
             </Grid>
             <Grid item xs={5}>
               <Stack direction={'column'}>
                 <Paper>
                   { roleResults.isLoading && <div>Loading ...</div>}
-                  { roleResults.data && <RoleList roles={roleResults.data} displayForm={setShowNewRole} />}
+                  { roleResults.data && <RoleList roles={roleResults.data} displayRoleForm={setShowRoleForm} selectRole={setSelectedRole}/>}
                 </Paper>
                 <Paper>
                   { rightResults.isLoading && <div>Loading ...</div>}
@@ -105,10 +137,9 @@ const UserManagement = () => {
         <Paper>
           <Button onClick={closeHandler} >close</Button>
           <ManageAccountsIcon />
-          { showNewRole && <AddRole addNewRole={createRole} displayForm={setShowNewRole} rightList={rightResults.data}/> }
+          { showRoleForm.show && <RoleForm roleData={selectedRole} displayRoleForm={setShowRoleForm} submitHandler={handleRoleFormSubmit} rightList={rightResults.data} formType={showRoleForm.formType}/> }
           { showNewRight && <AddRight addNewRight={createRight} displayForm={setShowNewRight} /> }
-          { showNewUser && <AddUser addNewUser={createUser} displayForm={setShowNewUser} roleList={roleResults.data.filter((role) => role.active)} /> }
-
+          { showUserForm.show && <UserForm userData={selectedUser} formType={showUserForm.formType} submitHandler={handleUserFormSubmit} displayUserForm={setShowUserForm} roleList={roleResults.data.filter((role) => role.active)} /> }
         </Paper>
       </Grid>
     </Grid>

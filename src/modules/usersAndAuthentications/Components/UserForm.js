@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import {
   TextField,
@@ -18,18 +18,20 @@ import CheckBoxIcon from '@mui/icons-material/CheckBox'
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />
 const checkedIcon = <CheckBoxIcon fontSize="small" />
 
-const AddUser = ({ addNewUser, displayForm, roleList }) => {
+const UserForm = ({ userData, formType, submitHandler, displayUserForm, roleList }) => {
 
-  const initialUser = {
-    firstName:'',
-    lastName:'',
-    username:'',
-    password:'',
-    active: true,
-    roles:[]
-  }
+  const formTitle = formType === 'ADD' ? 'Add New User' : 'Edit User'
+  const submitTitle = formType === 'ADD' ? 'Add User' : 'Update User'
 
-  const [ formValues, setFormValues ] = useState(initialUser)
+  const [ formValues, setFormValues ] = useState(userData)
+  const [ showPasswordField, setShowPasswordFiled ] = useState(formType === 'ADD')
+
+  console.log(' ** user form *** formValues ->', formValues)
+
+  useEffect(() => {
+    setFormValues(userData)
+    setShowPasswordFiled(formType === 'ADD')
+  },[userData])
 
   const handleChange = (event) => {
     const { name, value, checked } = event.target
@@ -51,8 +53,8 @@ const AddUser = ({ addNewUser, displayForm, roleList }) => {
   const handleSubmit = (event) => {
     event.preventDefault()
     const newUser = { ...formValues, roles: formValues.roles.map(role => role.id) }
-    addNewUser(newUser)
-    setFormValues(initialUser)
+    submitHandler(newUser)
+    formType === 'ADD' && setFormValues(userData)
   }
 
   return(
@@ -60,8 +62,8 @@ const AddUser = ({ addNewUser, displayForm, roleList }) => {
       <Box display='flex' justifyContent='space-between' alignItems='center'
         border={'solid'} borderColor={'#1976d270'} borderRadius={3} bgcolor={'#1976d270'}
       >
-        <Typography variant='h6' marginLeft={2}  >Add New User</Typography>
-        <Button variant='contained' onClick={() => displayForm(false)}>
+        <Typography variant='h6' marginLeft={2}  >{formTitle}</Typography>
+        <Button variant='contained' onClick={() => displayUserForm({ show: false })}>
           close
         </Button>
       </Box>
@@ -104,18 +106,22 @@ const AddUser = ({ addNewUser, displayForm, roleList }) => {
                 size='small'
                 required
               />
-              <TextField
-                label='Password'
-                name='password'
-                type='password'
-                sx={{ marginLeft: 2 }}
-                value={formValues.password}
-                onChange={handleChange}
-                margin='dense'
-                variant='outlined'
-                size='small'
-                required
-              />
+              { showPasswordField ?
+                <TextField
+                  label='Password'
+                  name='password'
+                  type='password'
+                  sx={{ marginLeft: 2 }}
+                  value={formValues.password}
+                  onChange={handleChange}
+                  autoComplete='off'
+                  margin='dense'
+                  variant='outlined'
+                  size='small'
+                  required
+                /> :
+                <Button onClick={() => setShowPasswordFiled(true)} >Change password</Button>
+              }
               <FormControlLabel
                 control={
                   <Checkbox
@@ -160,7 +166,6 @@ const AddUser = ({ addNewUser, displayForm, roleList }) => {
                     label='Roles'
                     placeholder='Add Role'
                     size='small'
-                    margin='2px'
                     sx={{ maxWidth: '350px', margin: '2' }}
                   />
                 )}
@@ -168,7 +173,7 @@ const AddUser = ({ addNewUser, displayForm, roleList }) => {
             </Grid>
             <Grid>
               <Button type='submit' variant='contained' color='primary' sx={{ marginLeft: 2, marginBottom: 2 }}>
-                Submit
+                {submitTitle}
               </Button>
             </Grid>
           </Grid>
@@ -180,4 +185,4 @@ const AddUser = ({ addNewUser, displayForm, roleList }) => {
   )
 }
 
-export default AddUser
+export default UserForm

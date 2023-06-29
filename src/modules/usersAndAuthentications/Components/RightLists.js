@@ -24,8 +24,6 @@ import Notification from '../../../utils/Notification'
 
 const RightList = ({ rights, displayForm }) => {
 
-  console.log('rights list ->', rights)
-
   const [ filteredRights, setFilteredRights ] = useState([])
   const [ page, setPage ] = useState(0)
   //const [ rows, setRows ] = useState(10)

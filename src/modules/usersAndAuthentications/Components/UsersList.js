@@ -14,7 +14,8 @@ import {
   Stack,
   Checkbox,
   Typography,
-  IconButton
+  IconButton,
+  Grid
 } from '@mui/material'
 
 import { visuallyHidden } from '@mui/utils'
@@ -24,11 +25,9 @@ import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
 import TablePaginationActions from '../../../utils/tablePaginationActions'
 import Notification from '../../../utils/Notification'
 
-const UserList = ({ users, displayForm }) => {
+const UserList = ({ users, displayUserForm, selectUser }) => {
 
-  console.log('user list ->', users)
-
-  const [ filteredUsers, setFilteredUsers ] = useState([])
+  //const [ filteredUsers, setFilteredUsers ] = useState([])
   const [ page, setPage ] = useState(0)
   const [ rows, setRows ] = useState(10)
   const [ sort, setSort ] = useState({ sortItem: 'stationId' , sortOrder: 1 })
@@ -36,18 +35,33 @@ const UserList = ({ users, displayForm }) => {
   const order = sort.sortOrder === 1 ? 'asc' : 'desc'
   const orderBy = sort.sortItem
 
-  const userFilterHandler = () => {
-    return setFilteredUsers([])
+
+  const filteredUsers = []
+
+  const showEditUser = (id) => {
+    const userData = users.filter((u) => u.id === id )[0]
+    console.log('**** user list * userData ->', userData)
+    selectUser(userData)
+    displayUserForm({ show: true, formType: 'EDIT' })
   }
 
   const addNewUser = () => {
-    displayForm(true)
+    const blanklUser = {
+      firstName:'',
+      lastName:'',
+      username:'',
+      password:'',
+      active: true,
+      roles:[]
+    }
+    selectUser(blanklUser)
+    displayUserForm({ show: true, formType: 'ADD' })
   }
 
   const columnHeader = [
-    { id: 'lastName', lable: 'Last Name', minWidth: 40 },
-    { id: 'firstName', lable: 'First Name', minWidth: 40 },
-    { id: 'username', lable: 'Username', minWidth: 30 },
+    { id: 'lastName', lable: 'Last Name', minWidth: 10  },
+    { id: 'firstName', lable: 'First Name', minWidth: 10 },
+    { id: 'username', lable: 'Username', minWidth: 5 },
     { id: 'active', lable: 'Active', minWidth: 5 },
   ]
 
@@ -59,14 +73,14 @@ const UserList = ({ users, displayForm }) => {
     }
     return (
       <TableHead>
-        <TableRow>
-          <TableCell colSpan={4} sx={{ backgroundColor: '#1976d2', color: 'white', fontWeight: 'bold' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Typography align='center'>USER LIST</Typography>
+        <TableRow >
+          <TableCell colSpan={4} sx={{ backgroundColor: '#1976d2', color: 'white', fontWeight: 'bold' }} >
+            <Grid container flex flexDirection={'row'} justifyContent={'space-between'} >
+              <Typography >USER LIST</Typography>
               <IconButton onClick={addNewUser} style={{ height: '16px', width: '16px', color:'white' }}>
                 <PersonAddAlt1Icon  />
               </IconButton>
-            </div>
+            </Grid >
           </TableCell>
         </TableRow>
         <TableRow>
@@ -129,7 +143,7 @@ const UserList = ({ users, displayForm }) => {
             <TableBody>
               { users.map((user) => {
                 return(
-                  <TableRow hover role='checkbox' tabIndex={-1} key={user.id} onClick={ userFilterHandler } >
+                  <TableRow hover role='checkbox' tabIndex={-1} key={user.id} onClick={() => showEditUser(user.id)} >
                     <TableCell align='left' >
                       {user.lastName}
                     </TableCell>
