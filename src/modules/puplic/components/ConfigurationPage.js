@@ -22,7 +22,7 @@ const ConfigurationPage = () => {
 
   return(
     <Grid container justifyContent='space-between'>
-      <Grid item>
+      <Grid item margin={5}>
         <Button
           component={Link} to='/userManagement'
           style={buttonStyle}

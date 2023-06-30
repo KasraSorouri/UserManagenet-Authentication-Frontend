@@ -15,7 +15,9 @@ import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 
 import loginServices from '../services/login'
+
 import { useUserSet } from '../../puplic/contexts/userContext'
+import { useNotificationSet } from '../../puplic/contexts/NotificationContext'
 
 const defaultTheme = createTheme()
 
@@ -23,6 +25,8 @@ const SignIn = () => {
 
   const navigate = useNavigate()
   const setUser = useUserSet()
+  const setNotification = useNotificationSet()
+
 
   const handleSubmit = async(event) => {
     event.preventDefault()
@@ -31,10 +35,15 @@ const SignIn = () => {
       username: data.get('username'),
       password: data.get('password'),
     }
+
     const user = await loginServices.login(credentials)
-    if (user) {
+    console.log( ' login result ->', user)
+    if (user.error) {
+      setNotification({ message: user.error, type: 'error', time: 5 })
+    } else {
       window.localStorage.setItem('Manufacturing_logedUser', JSON.stringify(user))
       setUser(user.data)
+      setNotification({ message: 'Login Successfully!', type: 'success', time: 3 })
       navigate('/')
     }
   }

@@ -107,19 +107,25 @@ const UserForm = ({ userData, formType, submitHandler, displayUserForm, roleList
                 required
               />
               { showPasswordField ?
-                <TextField
-                  label='Password'
-                  name='password'
-                  type='password'
-                  sx={{ marginLeft: 2 }}
-                  value={formValues.password}
-                  onChange={handleChange}
-                  autoComplete='off'
-                  margin='dense'
-                  variant='outlined'
-                  size='small'
-                  required
-                /> :
+                <Box>
+                  <TextField
+                    label='Password'
+                    name='password'
+                    type='password'
+                    sx={{ marginLeft: 2 }}
+                    value={formValues.password}
+                    onChange={handleChange}
+                    autoComplete='off'
+                    margin='dense'
+                    variant='outlined'
+                    size='small'
+                    required
+                  />
+                  <Button onClick={() => setShowPasswordFiled(false)} sx={{ margin: 1 }} >Keep Password</Button>
+
+                </Box>
+
+                :
                 <Button onClick={() => setShowPasswordFiled(true)} >Change password</Button>
               }
               <FormControlLabel

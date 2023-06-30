@@ -2,11 +2,8 @@ import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
 import {
   Grid,
-  Button,
   Paper,
   Stack } from '@mui/material'
-
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts'
 
 import userServices from '../services/user'
 import roleServices from '../services/role'
@@ -56,18 +53,12 @@ const UserManagement = () => {
   const editUserMutation = useMutation(userServices.editUser,{
     onSuccess: () => {
       queryClient.invalidateQueries('users')
-
-    //  const users = queryClient.getQueryData('users')
-    //  queryClient.setQueryData('users', [ ...users.filter(user => user.id !== editedUser.id), editedUser])
     }
   })
 
   const editRoleMutation = useMutation(roleServices.editRole,{
     onSuccess: () => {
       queryClient.invalidateQueries('roles')
-
-    //  const users = queryClient.getQueryData('users')
-    //  queryClient.setQueryData('users', [ ...users.filter(user => user.id !== editedUser.id), editedUser])
     }
   })
 
@@ -76,9 +67,8 @@ const UserManagement = () => {
   const roleResults = useQuery('roles',roleServices.getRoles, { refetchOnWindowFocus: false })
   const rightResults = useQuery('rights',rightServices.getRights, { refetchOnWindowFocus: false })
 
-
+  // Role form Submit
   const handleRoleFormSubmit = (newRoleData) => {
-    console.log('***** new role ->', newRoleData)
     if (showRoleForm.formType === 'ADD') {
       newRoleMutation.mutate(newRoleData)
     }
@@ -88,13 +78,13 @@ const UserManagement = () => {
     }
   }
 
+  // Right Form Submit
   const createRight = (newRight) => {
-    console.log('new right ->', newRight)
     newRightMutation.mutate(newRight)
   }
 
+  // User Form Submit
   const handleUserFormSubmit = (newUserData) => {
-    console.log('***** new user ->', newUserData)
     if (showUserForm.formType === 'ADD') {
       newUserMutation.mutate(newUserData)
     }
@@ -102,10 +92,6 @@ const UserManagement = () => {
     if (showUserForm.formType === 'EDIT') {
       editUserMutation.mutate(newUserData)
     }
-  }
-
-  const closeHandler = () => {
-    console.log('close')
   }
 
   return(
@@ -135,8 +121,6 @@ const UserManagement = () => {
       </Grid>
       <Grid item xs={7}>
         <Paper>
-          <Button onClick={closeHandler} >close</Button>
-          <ManageAccountsIcon />
           { showRoleForm.show && <RoleForm roleData={selectedRole} displayRoleForm={setShowRoleForm} submitHandler={handleRoleFormSubmit} rightList={rightResults.data} formType={showRoleForm.formType}/> }
           { showNewRight && <AddRight addNewRight={createRight} displayForm={setShowNewRight} /> }
           { showUserForm.show && <UserForm userData={selectedUser} formType={showUserForm.formType} submitHandler={handleUserFormSubmit} displayUserForm={setShowUserForm} roleList={roleResults.data.filter((role) => role.active)} /> }

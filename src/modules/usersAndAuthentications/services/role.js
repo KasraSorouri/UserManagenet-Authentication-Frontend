@@ -3,7 +3,6 @@ import axios from 'axios'
 import { api_url } from '../../../configs/config'
 import setToken from './authentication'
 
-
 // Get all Roles
 const getRoles = async() => {
   const res = await axios.get(`${api_url}/auth/role`)
