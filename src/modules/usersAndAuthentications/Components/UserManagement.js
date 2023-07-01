@@ -3,7 +3,12 @@ import { useQuery, useMutation, useQueryClient } from 'react-query'
 import {
   Grid,
   Paper,
-  Stack } from '@mui/material'
+  Stack,
+  LinearProgress
+} from '@mui/material'
+
+import { useNotificationSet } from '../../puplic/contexts/NotificationContext'
+
 
 import userServices from '../services/user'
 import roleServices from '../services/role'
@@ -12,11 +17,13 @@ import rightServices from '../services/right'
 import UserList from './UsersList'
 import RoleList from './RoleList'
 import RightList from './RightLists'
+import UserForm from './UserForm'
 import RoleForm from './RoleForm'
 import AddRight from './AddRight'
-import UserForm from './UserForm'
 
 const UserManagement = () => {
+
+  const setNotification = useNotificationSet()
 
   const [ showUserForm, setShowUserForm ] = useState({ show: false, formType: '' })
   const [ showRoleForm, setShowRoleForm ] = useState({ show: false, formType: '' })
@@ -33,6 +40,10 @@ const UserManagement = () => {
     onSuccess: (newRole) => {
       const roles = queryClient.getQueryData('roles')
       queryClient.setQueryData('roles', roles.concat(newRole))
+      setNotification({ message: 'Role added successfully!', type: 'success', time: 3 })
+    },
+    onError: () => {
+      setNotification({ message: 'Role does not add due to an error!', type: 'error', time: 8 })
     }
   })
 
@@ -40,12 +51,20 @@ const UserManagement = () => {
     onSuccess: (newRight) => {
       const roles = queryClient.getQueryData('rights')
       queryClient.setQueryData('rights', roles.concat(newRight))
+      setNotification({ message: 'Right added successfully!', type: 'success', time: 3 })
+    },
+    onError: () => {
+      setNotification({ message: 'Right does not add due to an error!', type: 'error', time: 8 })
     }
   })
 
   const newUserMutation = useMutation(userServices.createUser, {
     onSuccess: () => {
       queryClient.invalidateQueries('users')
+      setNotification({ message: 'User added successfully!', type: 'success', time: 3 })
+    },
+    onError: () => {
+      setNotification({ message: 'User does not add due to an error!', type: 'error', time: 8 })
     }
   })
 
@@ -53,12 +72,20 @@ const UserManagement = () => {
   const editUserMutation = useMutation(userServices.editUser,{
     onSuccess: () => {
       queryClient.invalidateQueries('users')
+      setNotification({ message: 'User updated successfully!', type: 'success', time: 3 })
+    },
+    onError: () => {
+      setNotification({ message: 'User does not update due to an error!', type: 'error', time: 8 })
     }
   })
 
   const editRoleMutation = useMutation(roleServices.editRole,{
     onSuccess: () => {
       queryClient.invalidateQueries('roles')
+      setNotification({ message: 'Role updated successfully!', type: 'success', time: 3 })
+    },
+    onError: () => {
+      setNotification({ message: 'Role does not update due to an error!', type: 'error', time: 8 })
     }
   })
 
@@ -100,17 +127,17 @@ const UserManagement = () => {
         <Paper>
           <Grid container spacing={2} >
             <Grid item xs={7}>
-              { userResults.isLoading && <div>Loading ...</div>}
+              { userResults.isLoading && <LinearProgress sx={{ margin: 1 }}/> }
               { userResults.data && <UserList users={userResults.data} displayUserForm={setShowUserForm} selectUser={setSelectedUser} />}
             </Grid>
             <Grid item xs={5}>
               <Stack direction={'column'}>
                 <Paper>
-                  { roleResults.isLoading && <div>Loading ...</div>}
+                  { roleResults.isLoading && <LinearProgress sx={{ margin: 1 }}/> }
                   { roleResults.data && <RoleList roles={roleResults.data} displayRoleForm={setShowRoleForm} selectRole={setSelectedRole}/>}
                 </Paper>
                 <Paper>
-                  { rightResults.isLoading && <div>Loading ...</div>}
+                  { rightResults.isLoading && <LinearProgress sx={{ margin: 1 }}/> }
                   { rightResults.data && <RightList rights={rightResults.data} displayForm={setShowNewRight}/>}
                 </Paper>
               </Stack>

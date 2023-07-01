@@ -20,7 +20,8 @@ const createUser = async(userData) => {
     const res = await axios.post(`${api_url}/auth/user`, userData, config)
     return res.data
   } catch (err) {
-    console.log('**** error:', err.message)
+    const errorMessage = err.response.data.error || err.message
+    throw new Error(`${errorMessage}`)
   }
 }
 
@@ -36,8 +37,8 @@ const editUser = async(userData) => {
     const res = await axios.put(`${api_url}/auth/user/${id}`, userEditedData, config)
     return res.data
   } catch (err) {
-    console.log('**** error:', err.message)
-  }
+    const errorMessage = err.response.data.error || err.message
+    throw new Error(`${errorMessage}`)  }
 }
 
 export default {

@@ -26,8 +26,6 @@ const UserForm = ({ userData, formType, submitHandler, displayUserForm, roleList
   const [ formValues, setFormValues ] = useState(userData)
   const [ showPasswordField, setShowPasswordFiled ] = useState(formType === 'ADD')
 
-  console.log(' ** user form *** formValues ->', formValues)
-
   useEffect(() => {
     setFormValues(userData)
     setShowPasswordFiled(formType === 'ADD')
@@ -121,8 +119,10 @@ const UserForm = ({ userData, formType, submitHandler, displayUserForm, roleList
                     size='small'
                     required
                   />
-                  <Button onClick={() => setShowPasswordFiled(false)} sx={{ margin: 1 }} >Keep Password</Button>
-
+                  { formType === 'EDIT' ?
+                    <Button onClick={() => setShowPasswordFiled(false)} sx={{ margin: 1 }} >Keep Password</Button>
+                    : null
+                  }
                 </Box>
 
                 :
@@ -152,7 +152,6 @@ const UserForm = ({ userData, formType, submitHandler, displayUserForm, roleList
                 onChange={handleRoleChange}
                 getOptionLabel={(option) => option.roleName}
                 renderOption={(props, option, { selected }) => {
-                  console.log('props ->', props, '  ** option ->', option, ' ** selected ->', selected )
                   return (
                     <li {...props}>
                       <Checkbox

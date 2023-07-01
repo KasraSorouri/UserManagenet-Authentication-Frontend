@@ -27,11 +27,9 @@ import Notification from '../../../utils/Notification'
 
 const UserList = ({ users, displayUserForm, selectUser }) => {
 
-  //const [ filteredUsers, setFilteredUsers ] = useState([])
   const [ page, setPage ] = useState(0)
   const [ rows, setRows ] = useState(10)
   const [ sort, setSort ] = useState({ sortItem: 'stationId' , sortOrder: 1 })
-  //const [ filterParameters, setFilterParameters ] = useState()
   const order = sort.sortOrder === 1 ? 'asc' : 'desc'
   const orderBy = sort.sortItem
 
@@ -40,7 +38,6 @@ const UserList = ({ users, displayUserForm, selectUser }) => {
 
   const showEditUser = (id) => {
     const userData = users.filter((u) => u.id === id )[0]
-    console.log('**** user list * userData ->', userData)
     selectUser(userData)
     displayUserForm({ show: true, formType: 'EDIT' })
   }

@@ -26,11 +26,8 @@ import Notification from '../../../utils/Notification'
 
 const RoleList = ({ roles, displayRoleForm, selectRole }) => {
 
-  //const [ filteredRoles, setFilteredRoles ] = useState([])
   const [ page, setPage ] = useState(0)
-  //const [ rows, setRows ] = useState(5)
   const [ sort, setSort ] = useState({ sortItem: 'stationId' , sortOrder: 1 })
-  //const [ filterParameters, setFilterParameters ] = useState()
   const order = sort.sortOrder === 1 ? 'asc' : 'desc'
   const orderBy = sort.sortItem
 
@@ -38,7 +35,6 @@ const RoleList = ({ roles, displayRoleForm, selectRole }) => {
 
   const showEditRole = (id) => {
     const roleData = roles.filter((r) => r.id === id )[0]
-    console.log('**** user list * userData ->', roleData)
     selectRole(roleData)
     displayRoleForm({ show: true, formType: 'EDIT' })
   }

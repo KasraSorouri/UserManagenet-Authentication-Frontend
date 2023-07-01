@@ -1,18 +1,18 @@
 import { useState, useEffect, forwardRef } from 'react'
 import {
-  //Button,
   Snackbar,
   Stack
 } from '@mui/material'
 import MuiAlert from '@mui/material/Alert'
 
+import { useNotificationValue } from '../contexts/NotificationContext'
 
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
 })
 
-const Notification = ({ notification }) => {
-  console.log('Notification **** message ->', notification.message, '    **  type ->', notification.type, '   ** time:', notification.time*1000)
+const Notification = () => {
+  const notification = useNotificationValue()
   const [open, setOpen] = useState(true)
 
   useEffect(() => {
@@ -43,7 +43,6 @@ const Notification = ({ notification }) => {
         anchorOrigin={{ vertical: 'top', horizontal:'center' }}
         sx={{ marginTop: 7 }}
         open={open}
-        //autoHideDuration={notification.time*1000}
         onClose={handleClose}
       >
         <Alert onClose={handleClose} severity={notification.type} sx={{ width: '100%' }}>

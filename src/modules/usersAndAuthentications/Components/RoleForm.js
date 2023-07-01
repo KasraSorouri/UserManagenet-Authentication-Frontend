@@ -20,17 +20,10 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />
 
 const RoleForm = ({ formType, roleData, submitHandler, displayRoleForm, rightList }) => {
 
-  console.log(' ** Role form *** Role data ->', roleData)
-  console.log(' ** Role form *** right list ->', rightList)
-  console.log(' ** Role form *** formType ->', formType)
-
-
   const formTitle = formType === 'ADD' ? 'Add New Role' : 'Edit Role'
   const submitTitle = formType === 'ADD' ? 'Add Role' : 'Update Role'
 
   const [ formValues, setFormValues ] = useState(roleData)
-
-  console.log(' ** Role form *** formValues ->', formValues)
 
   useEffect(() => {
     setFormValues(roleData)

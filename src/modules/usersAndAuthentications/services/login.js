@@ -10,7 +10,7 @@ const login = async(credentials) => {
     return result
   } catch (err) {
     const errorMessage = err.response.data.error || err.message
-    return { error: `${errorMessage}` }
+    throw new Error(`${errorMessage}`)
   }
 }
 

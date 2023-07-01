@@ -9,9 +9,6 @@ import UserProfile from './UserProfile'
 
 const Navigation = ({ user }) => {
 
-
-  console.log(' ** navi  *user ->', user)
-
   return (
     <AppBar position='sticky'>
       <Toolbar>

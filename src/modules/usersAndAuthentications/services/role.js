@@ -20,8 +20,9 @@ const createRole = async(roleData) => {
     const res = await axios.post(`${api_url}/auth/role`, roleData, config)
     return res.data
   } catch (err) {
-    console.log('**** error:', err.message)
-  }
+    const errorMessage = err.response.data.error || err.message
+    console.log(' ** error ->',errorMessage )
+    throw new Error(`${errorMessage}`)  }
 }
 
 // Update a Role
@@ -36,7 +37,8 @@ const editRole = async(roleData) => {
     const res = await axios.put(`${api_url}/auth/role/${id}`, roleEditedData, config)
     return res.data
   } catch (err) {
-    console.log('**** error:', err.message)
+    const errorMessage = err.response.data.error || err.message
+    throw new Error(`${errorMessage}`)
   }
 }
 

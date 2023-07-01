@@ -15,16 +15,11 @@ import UserManagement from './modules/usersAndAuthentications/Components/UserMan
 import Notification from './modules/puplic/components/Notification'
 
 import { useUserValue, useUserSet  } from './modules/puplic/contexts/userContext'
-import { useNotificationValue } from './modules/puplic/contexts/NotificationContext'
 
 function App() {
 
   const setUser = useUserSet()
   const user = useUserValue()
-  const notification = useNotificationValue()
-
-
-  console.log(' app notification ->', notification)
 
   useEffect(() => {
     const logedUser = window.localStorage.getItem('Manufacturing_logedUser')
@@ -35,7 +30,7 @@ function App() {
     <div>
       <Router>
         <Navigation user={user} />
-        <Notification notification={notification} />
+        <Notification  />
         <Routes>
           <Route path='/' element={<HomePage />} />
           <Route path='/login' element={<SignIn />} />

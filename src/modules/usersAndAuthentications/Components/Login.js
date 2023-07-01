@@ -36,15 +36,14 @@ const SignIn = () => {
       password: data.get('password'),
     }
 
-    const user = await loginServices.login(credentials)
-    console.log( ' login result ->', user)
-    if (user.error) {
-      setNotification({ message: user.error, type: 'error', time: 5 })
-    } else {
+    try {
+      const user = await loginServices.login(credentials)
       window.localStorage.setItem('Manufacturing_logedUser', JSON.stringify(user))
       setUser(user.data)
       setNotification({ message: 'Login Successfully!', type: 'success', time: 3 })
       navigate('/')
+    } catch (err) {
+      setNotification({ message: err.message, type: 'error', time: 5 })
     }
   }
 
