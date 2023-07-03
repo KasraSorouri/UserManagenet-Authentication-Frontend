@@ -12,8 +12,7 @@ import {
   Button,
 } from '@mui/material'
 
-import { useNotificationSet } from '../../puplic/contexts/NotificationContext'
-
+import { useNotificationSet } from '../../../contexts/NotificationContext'
 
 import userServices from '../services/user'
 import roleServices from '../services/role'
@@ -120,7 +119,6 @@ const UserManagement = () => {
   let filteredRights = rightResults.data
   let filteredRoles = roleResults.data
   let filteredUsers = userResults.data
-
 
   switch (filterParameter.userActive) {
   case 'yes':

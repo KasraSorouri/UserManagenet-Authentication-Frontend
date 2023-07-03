@@ -8,7 +8,6 @@ import {
   TableContainer,
   TableHead,
   TableSortLabel,
-  //TablePagination,
   Box,
   TableRow,
   IconButton,
@@ -19,24 +18,15 @@ import {
 import AddIcon from '@mui/icons-material/Add'
 import { visuallyHidden } from '@mui/utils'
 
-//import TablePaginationActions from '../../../utils/tablePaginationActions'
-import Notification from '../../../utils/Notification'
+import { useNotificationSet } from '../../../contexts/NotificationContext'
 
 const RightList = ({ rights, allRights, displayForm }) => {
 
-  //const [ filteredRights, setFilteredRights ] = useState([])
-  //const [ page, setPage ] = useState(0)
-  //const [ rows, setRows ] = useState(10)
+  const setNotification = useNotificationSet()
+
   const [ sort, setSort ] = useState({ sortItem: 'stationId' , sortOrder: 1 })
-  //const [ filterParameters, setFilterParameters ] = useState()
   const order = sort.sortOrder === 1 ? 'asc' : 'desc'
   const orderBy = sort.sortItem
-
-  /*
-  const rightFilterHandler = () => {
-    return setFilteredRights([])
-  }
-  */
 
   const addNewRight = () => {
     displayForm(true)
@@ -90,7 +80,7 @@ const RightList = ({ rights, allRights, displayForm }) => {
 
   if (!rights){
     return (
-      <Notification text={'No Right find!'} type={'error'} time={0} />
+      setNotification({ message: 'No Right find!', type: 'info', time: 8 })
     )
   }
 

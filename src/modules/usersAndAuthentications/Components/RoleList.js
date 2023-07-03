@@ -21,10 +21,11 @@ import EditIcon from '@mui/icons-material/Edit'
 
 import { visuallyHidden } from '@mui/utils'
 
-import Notification from '../../../utils/Notification'
-
+import { useNotificationSet } from '../../../contexts/NotificationContext'
 
 const RoleList = ({ roles, allRoles, displayRoleForm, selectRole }) => {
+
+  const setNotification = useNotificationSet()
 
   const [ sort, setSort ] = useState({ sortItem: 'stationId' , sortOrder: 1 })
   const order = sort.sortOrder === 1 ? 'asc' : 'desc'
@@ -95,7 +96,7 @@ const RoleList = ({ roles, allRoles, displayRoleForm, selectRole }) => {
 
   if (!roles){
     return (
-      <Notification text={'No role find!'} type={'error'} time={0} />
+      setNotification({ message: 'No role find!', type: 'info', time: 8 })
     )
   }
 

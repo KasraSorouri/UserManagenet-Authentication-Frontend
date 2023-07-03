@@ -14,7 +14,7 @@ import Logout from '@mui/icons-material/Logout'
 
 import { useNavigate } from 'react-router-dom'
 
-import { useUserSet } from '../contexts/userContext'
+import { useUserSet } from '../../../contexts/userContext'
 
 
 const UserProfile = ({ user }) => {

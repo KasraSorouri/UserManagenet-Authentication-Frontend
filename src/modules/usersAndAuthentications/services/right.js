@@ -18,7 +18,9 @@ const createRight = async(rightData) => {
     const res = await axios.post(`${api_url}/auth/right`, rightData, config)
     return res.data
   } catch (err) {
-    console.log('**** error:', err.message)
+    const errorMessage = err.response.data.error || err.message
+    console.log(' ** error ->',errorMessage )
+    throw new Error(`${errorMessage}`)
   }
 }
 

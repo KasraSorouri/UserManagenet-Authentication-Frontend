@@ -21,9 +21,11 @@ import { visuallyHidden } from '@mui/utils'
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
 import EditIcon from '@mui/icons-material/Edit'
 
-import Notification from '../../../utils/Notification'
+import { useNotificationSet } from '../../../contexts/NotificationContext'
 
 const UserList = ({ users, allUsers,  displayUserForm, selectUser }) => {
+
+  const setNotification = useNotificationSet()
 
   const [ sort, setSort ] = useState({ sortItem: 'stationId' , sortOrder: 1 })
   const order = sort.sortOrder === 1 ? 'asc' : 'desc'
@@ -98,7 +100,7 @@ const UserList = ({ users, allUsers,  displayUserForm, selectUser }) => {
 
   if (!users){
     return (
-      <Notification text={'No user find!'} type={'error'} time={0} />
+      setNotification({ message: 'No User find!', type: 'info', time: 8 })
     )
   }
 

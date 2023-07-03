@@ -16,8 +16,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 
 import loginServices from '../services/login'
 
-import { useUserSet } from '../../puplic/contexts/userContext'
-import { useNotificationSet } from '../../puplic/contexts/NotificationContext'
+import { useUserSet } from '../../../contexts/userContext'
+import { useNotificationSet } from '../../../contexts/NotificationContext'
 
 const defaultTheme = createTheme()
 

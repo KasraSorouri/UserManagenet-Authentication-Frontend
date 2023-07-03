@@ -14,7 +14,7 @@ import ConfigurationPage from './modules/puplic/components/ConfigurationPage'
 import UserManagement from './modules/usersAndAuthentications/Components/UserManagement'
 import Notification from './modules/puplic/components/Notification'
 
-import { useUserValue, useUserSet  } from './modules/puplic/contexts/userContext'
+import { useUserValue, useUserSet  } from './contexts/userContext'
 
 function App() {
 
