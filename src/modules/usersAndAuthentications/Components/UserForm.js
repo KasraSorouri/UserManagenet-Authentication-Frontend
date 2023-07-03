@@ -15,8 +15,8 @@ import {
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank'
 import CheckBoxIcon from '@mui/icons-material/CheckBox'
 
-const icon = <CheckBoxOutlineBlankIcon fontSize="small" />
-const checkedIcon = <CheckBoxIcon fontSize="small" />
+const icon = <CheckBoxOutlineBlankIcon fontSize='small' />
+const checkedIcon = <CheckBoxIcon fontSize='small' />
 
 const UserForm = ({ userData, formType, submitHandler, displayUserForm, roleList }) => {
 
@@ -123,7 +123,6 @@ const UserForm = ({ userData, formType, submitHandler, displayUserForm, roleList
                     : null
                   }
                 </Box>
-
                 :
                 <Button onClick={() => setShowPasswordFiled(true)} >Change password</Button>
               }
@@ -181,10 +180,8 @@ const UserForm = ({ userData, formType, submitHandler, displayUserForm, roleList
               </Button>
             </Grid>
           </Grid>
-
         </Box>
       </form>
-
     </Paper>
   )
 }

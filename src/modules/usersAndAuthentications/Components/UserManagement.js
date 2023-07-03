@@ -229,7 +229,6 @@ const UserManagement = () => {
               </Grid>
             </Grid>
           </Paper>
-
         </Grid>
         <Grid item xs={6} >
           { showRoleForm.show && <RoleForm roleData={selectedRole} displayRoleForm={setShowRoleForm} submitHandler={handleRoleFormSubmit} rightList={rightResults.data} formType={showRoleForm.formType}/> }

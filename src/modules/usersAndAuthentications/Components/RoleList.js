@@ -27,9 +27,20 @@ const RoleList = ({ roles, allRoles, displayRoleForm, selectRole }) => {
 
   const setNotification = useNotificationSet()
 
-  const [ sort, setSort ] = useState({ sortItem: 'stationId' , sortOrder: 1 })
+  // Sort Items
+  const [ sort, setSort ] = useState({ sortItem: 'roleName' , sortOrder: 1 })
   const order = sort.sortOrder === 1 ? 'asc' : 'desc'
   const orderBy = sort.sortItem
+
+  const sortedRoles = roles.sort((a, b) => {
+    if (a[orderBy] < b[orderBy]) {
+      return -1 * sort.sortOrder
+    }
+    if (a[orderBy] > b[orderBy]) {
+      return 1 * sort.sortOrder
+    }
+    return 0
+  })
 
   const showEditRole = (id) => {
     const roleData = roles.filter((r) => r.id === id )[0]
@@ -47,9 +58,8 @@ const RoleList = ({ roles, allRoles, displayRoleForm, selectRole }) => {
     displayRoleForm({ show: true, formType: 'ADD' })
   }
 
-
   const columnHeader = [
-    { id: 'RoleName', lable: 'Role Name', minWidth: 30 },
+    { id: 'roleName', lable: 'Role Name', minWidth: 30 },
     { id: 'active', lable: 'Active', minWidth: 5 },
   ]
 
@@ -120,7 +130,7 @@ const RoleList = ({ roles, allRoles, displayRoleForm, selectRole }) => {
               onRequestSort={handleRequestSort}
             />
             <TableBody>
-              { roles.map((role) => {
+              { sortedRoles.map((role) => {
                 return(
                   <TableRow hover role='checkbox' tabIndex={-1} key={role.id}>
                     <TableCell align='left'>
@@ -143,7 +153,6 @@ const RoleList = ({ roles, allRoles, displayRoleForm, selectRole }) => {
       </Paper>
     </div>
   )
-
 }
 
 export default RoleList

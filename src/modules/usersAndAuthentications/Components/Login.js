@@ -27,7 +27,6 @@ const SignIn = () => {
   const setUser = useUserSet()
   const setNotification = useNotificationSet()
 
-
   const handleSubmit = async(event) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -49,7 +48,7 @@ const SignIn = () => {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
+      <Container component='main' maxWidth='xs'>
         <CssBaseline />
         <Box
           sx={{
@@ -62,47 +61,46 @@ const SignIn = () => {
           <Avatar sx={{ m: 1, bgcolor: '#1976d2' }}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
+          <Typography component='h1' variant='h5'>
             Sign in
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box component='form' onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
-              margin="normal"
+              margin='normal'
               fullWidth
-              id="username"
-              label="username"
-              name="username"
-              autoComplete="username"
+              id='username'
+              label='username'
+              name='username'
+              autoComplete='username'
               autoFocus
             />
             <TextField
-              margin="normal"
+              margin='normal'
               fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
+              name='password'
+              label='Password'
+              type='password'
+              id='password'
+              autoComplete='current-password'
             />
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+              control={<Checkbox value='remember' color='primary' />}
+              label='Remember me'
             />
             <Button
-              type="submit"
+              type='submit'
               fullWidth
-              variant="contained"
+              variant='contained'
               sx={{ mt: 3, mb: 2 }}
             >
               Sign In
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                <Link href='#' variant='body2'>
                   Forgot password?
                 </Link>
               </Grid>
-
             </Grid>
           </Box>
         </Box>

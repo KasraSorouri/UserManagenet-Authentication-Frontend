@@ -27,9 +27,20 @@ const UserList = ({ users, allUsers,  displayUserForm, selectUser }) => {
 
   const setNotification = useNotificationSet()
 
-  const [ sort, setSort ] = useState({ sortItem: 'stationId' , sortOrder: 1 })
+  // Sort Items
+  const [ sort, setSort ] = useState({ sortItem: 'lastName' , sortOrder: 1 })
   const order = sort.sortOrder === 1 ? 'asc' : 'desc'
   const orderBy = sort.sortItem
+
+  const sortedUsers = users.sort((a, b) => {
+    if (a[orderBy] < b[orderBy]) {
+      return -1 * sort.sortOrder
+    }
+    if (a[orderBy] > b[orderBy]) {
+      return 1 * sort.sortOrder
+    }
+    return 0
+  })
 
   const showEditUser = (id) => {
     const userData = users.filter((u) => u.id === id )[0]
@@ -110,7 +121,6 @@ const UserList = ({ users, allUsers,  displayUserForm, selectUser }) => {
         <Grid container bgcolor={'#1976d2d9'} color={'white'} justifyContent={'space-between'} flexDirection={'row'} >
           <Typography margin={1} >USER LIST</Typography>
           <Typography margin={1} >{users.length} of {allUsers} users</Typography>
-
           <div style={{ margin: '10px' }} >
             <IconButton onClick={addNewUser} style={{ height: '16px', width: '16px', color:'white' }}>
               <PersonAddAlt1Icon />
@@ -125,7 +135,7 @@ const UserList = ({ users, allUsers,  displayUserForm, selectUser }) => {
               onRequestSort={handleRequestSort}
             />
             <TableBody>
-              { users.map((user) => {
+              { sortedUsers.map((user) => {
                 return(
                   <TableRow hover role='checkbox' tabIndex={-1} key={user.id} >
                     <TableCell align='left' >

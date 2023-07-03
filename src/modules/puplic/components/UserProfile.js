@@ -32,7 +32,6 @@ const UserProfile = ({ user }) => {
   }
 
   const handleLogout = () => {
-    console.log('logout')
     window.localStorage.removeItem('Manufacturing_logedUser')
     setUser(null)
     navigate('/login')
@@ -56,13 +55,13 @@ const UserProfile = ({ user }) => {
         >
           { `${user.firstName} ${user.lastName}`}
         </Typography>
-        <Tooltip title="Account settings">
+        <Tooltip title='Account settings'>
           <IconButton
             onClick={handleClick}
-            size="small"
+            size='small'
             sx={{ ml: 2 }}
             aria-controls={open ? 'account-menu' : undefined}
-            aria-haspopup="true"
+            aria-haspopup='true'
             aria-expanded={open ? 'true' : undefined}
           >
             <Avatar sx={{ width: 32, height: 32 }}>{user.firstName[0].toUpperCase()}.{user.lastName[0].toUpperCase()}</Avatar>
@@ -71,7 +70,7 @@ const UserProfile = ({ user }) => {
       </Box>
       <Menu
         anchorEl={anchorEl}
-        id="account-menu"
+        id='account-menu'
         open={open}
         onClose={handleClose}
         onClick={handleClose}
@@ -110,7 +109,7 @@ const UserProfile = ({ user }) => {
         <Divider />
         <MenuItem onClick={handleLogout}>
           <ListItemIcon>
-            <Logout fontSize="small" />
+            <Logout fontSize='small' />
           </ListItemIcon>
           Logout
         </MenuItem>

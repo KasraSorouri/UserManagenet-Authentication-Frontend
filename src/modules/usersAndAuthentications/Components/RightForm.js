@@ -23,7 +23,6 @@ const RightForm = ({ addNewRight, displayForm }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    console.log('** ** add right ->', formValues)
     addNewRight(formValues)
     setFormValues({
       right: '',
@@ -67,7 +66,7 @@ const RightForm = ({ addNewRight, displayForm }) => {
             required
             sx={{ marginLeft: 2 }}
           />
-          <Button type="submit" variant="contained" color="primary" sx={{ marginLeft: 2 }} >
+          <Button type='submit' variant='contained' color='primary' sx={{ marginLeft: 2 }} >
           Submit
           </Button>
         </Box>

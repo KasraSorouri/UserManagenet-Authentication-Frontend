@@ -15,8 +15,8 @@ import {
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank'
 import CheckBoxIcon from '@mui/icons-material/CheckBox'
 
-const icon = <CheckBoxOutlineBlankIcon fontSize="small" />
-const checkedIcon = <CheckBoxIcon fontSize="small" />
+const icon = <CheckBoxOutlineBlankIcon fontSize='small' />
+const checkedIcon = <CheckBoxIcon fontSize='small' />
 
 const RoleForm = ({ formType, roleData, submitHandler, displayRoleForm, rightList }) => {
 
@@ -28,7 +28,6 @@ const RoleForm = ({ formType, roleData, submitHandler, displayRoleForm, rightLis
   useEffect(() => {
     setFormValues(roleData)
   },[roleData])
-
 
   const handleChange = (event) => {
     const { name, value, checked } = event.target

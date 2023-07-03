@@ -24,9 +24,20 @@ const RightList = ({ rights, allRights, displayForm }) => {
 
   const setNotification = useNotificationSet()
 
-  const [ sort, setSort ] = useState({ sortItem: 'stationId' , sortOrder: 1 })
+  // Sort Items
+  const [ sort, setSort ] = useState({ sortItem: 'right' , sortOrder: 1 })
   const order = sort.sortOrder === 1 ? 'asc' : 'desc'
   const orderBy = sort.sortItem
+
+  const sortedRights = rights.sort((a, b) => {
+    if (a[orderBy] < b[orderBy]) {
+      return -1 * sort.sortOrder
+    }
+    if (a[orderBy] > b[orderBy]) {
+      return 1 * sort.sortOrder
+    }
+    return 0
+  })
 
   const addNewRight = () => {
     displayForm(true)
@@ -104,7 +115,7 @@ const RightList = ({ rights, allRights, displayForm }) => {
               onRequestSort={handleRequestSort}
             />
             <TableBody>
-              { rights.map((right) => {
+              { sortedRights.map((right) => {
                 return(
                   <TableRow hover role='checkbox' tabIndex={-1} key={right.id} >
                     <TableCell align='left' >

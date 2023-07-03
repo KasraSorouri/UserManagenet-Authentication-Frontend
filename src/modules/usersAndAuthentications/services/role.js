@@ -21,7 +21,6 @@ const createRole = async(roleData) => {
     return res.data
   } catch (err) {
     const errorMessage = err.response.data.error || err.message
-    console.log(' ** error ->',errorMessage )
     throw new Error(`${errorMessage}`)  }
 }
 

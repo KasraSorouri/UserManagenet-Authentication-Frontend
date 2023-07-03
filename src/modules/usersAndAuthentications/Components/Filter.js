@@ -11,7 +11,6 @@ import {
   Typography
 } from '@mui/material'
 
-
 const Filter = ({ HandleFilter }) => {
 
   const initialValue = {
