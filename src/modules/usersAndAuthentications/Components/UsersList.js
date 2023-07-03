@@ -8,10 +8,8 @@ import {
   TableContainer,
   TableHead,
   TableSortLabel,
-  TablePagination,
   Box,
   TableRow,
-  Stack,
   Checkbox,
   Typography,
   IconButton,
@@ -21,20 +19,15 @@ import {
 import { visuallyHidden } from '@mui/utils'
 
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
+import EditIcon from '@mui/icons-material/Edit'
 
-import TablePaginationActions from '../../../utils/tablePaginationActions'
 import Notification from '../../../utils/Notification'
 
-const UserList = ({ users, displayUserForm, selectUser }) => {
+const UserList = ({ users, allUsers,  displayUserForm, selectUser }) => {
 
-  const [ page, setPage ] = useState(0)
-  const [ rows, setRows ] = useState(10)
   const [ sort, setSort ] = useState({ sortItem: 'stationId' , sortOrder: 1 })
   const order = sort.sortOrder === 1 ? 'asc' : 'desc'
   const orderBy = sort.sortItem
-
-
-  const filteredUsers = []
 
   const showEditUser = (id) => {
     const userData = users.filter((u) => u.id === id )[0]
@@ -70,16 +63,6 @@ const UserList = ({ users, displayUserForm, selectUser }) => {
     }
     return (
       <TableHead>
-        <TableRow >
-          <TableCell colSpan={4} sx={{ backgroundColor: '#1976d2', color: 'white', fontWeight: 'bold' }} >
-            <Grid container flex flexDirection={'row'} justifyContent={'space-between'} >
-              <Typography >USER LIST</Typography>
-              <IconButton onClick={addNewUser} style={{ height: '16px', width: '16px', color:'white' }}>
-                <PersonAddAlt1Icon  />
-              </IconButton>
-            </Grid >
-          </TableCell>
-        </TableRow>
         <TableRow>
           {columnHeader.map((column) => (
             <TableCell
@@ -121,16 +104,18 @@ const UserList = ({ users, displayUserForm, selectUser }) => {
 
   return(
     <div>
-      <Stack direction={'row'} columnGap={7}>
-        {users.length !== filteredUsers.length ?
-          <Box marginTop={2.5}>
-            <Notification text={`${filteredUsers.length} of ${users.length} is filtered.`} time={0} />
-          </Box>
-          : null
-        }
-      </Stack>
       <Paper>
-        <TableContainer sx={{ height: 600 }}>
+        <Grid container bgcolor={'#1976d2d9'} color={'white'} justifyContent={'space-between'} flexDirection={'row'} >
+          <Typography margin={1} >USER LIST</Typography>
+          <Typography margin={1} >{users.length} of {allUsers} users</Typography>
+
+          <div style={{ margin: '10px' }} >
+            <IconButton onClick={addNewUser} style={{ height: '16px', width: '16px', color:'white' }}>
+              <PersonAddAlt1Icon />
+            </IconButton>
+          </div>
+        </Grid>
+        <TableContainer sx={{ maxHeight: '550Px' }}>
           <Table stickyHeader aria-label='sticky table' size='small'>
             <EnhancedTableHead
               order={order}
@@ -140,7 +125,7 @@ const UserList = ({ users, displayUserForm, selectUser }) => {
             <TableBody>
               { users.map((user) => {
                 return(
-                  <TableRow hover role='checkbox' tabIndex={-1} key={user.id} onClick={() => showEditUser(user.id)} >
+                  <TableRow hover role='checkbox' tabIndex={-1} key={user.id} >
                     <TableCell align='left' >
                       {user.lastName}
                     </TableCell>
@@ -151,7 +136,12 @@ const UserList = ({ users, displayUserForm, selectUser }) => {
                       {user.username}
                     </TableCell>
                     <TableCell align='center' >
-                      <Checkbox checked={user.active} style={{ height: '16px', width: '16px' }}/>
+                      <Box justifyContent={'space-between'} >
+                        <Checkbox checked={user.active} style={{ height: '16px', width: '16px' }}/>
+                        <IconButton onClick={() => showEditUser(user.id)} style={{ height: '12px', width: '12px', marginLeft: 25 , color:'#1976d2d9' }}>
+                          <EditIcon />
+                        </IconButton>
+                      </Box>
                     </TableCell>
                   </TableRow>
                 )
@@ -159,20 +149,9 @@ const UserList = ({ users, displayUserForm, selectUser }) => {
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[10, 25, 50]}
-          component='div'
-          count={users.length}
-          rowsPerPage={rows}
-          page={page}
-          onPageChange={(event, newPage) => setPage(newPage)}
-          onRowsPerPageChange={(event) => setRows(event.target.value)}
-          ActionsComponent={TablePaginationActions}
-        />
       </Paper>
     </div>
   )
-
 }
 
 export default UserList

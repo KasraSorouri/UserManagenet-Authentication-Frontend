@@ -1,10 +1,15 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+
 import { useQuery, useMutation, useQueryClient } from 'react-query'
 import {
   Grid,
   Paper,
   Stack,
-  LinearProgress
+  LinearProgress,
+  Box,
+  Typography,
+  Button,
 } from '@mui/material'
 
 import { useNotificationSet } from '../../puplic/contexts/NotificationContext'
@@ -19,11 +24,13 @@ import RoleList from './RoleList'
 import RightList from './RightLists'
 import UserForm from './UserForm'
 import RoleForm from './RoleForm'
-import AddRight from './AddRight'
+import RightForm from './RightForm'
+import Filter from './Filter'
 
 const UserManagement = () => {
 
   const setNotification = useNotificationSet()
+  const navigate = useNavigate()
 
   const [ showUserForm, setShowUserForm ] = useState({ show: false, formType: '' })
   const [ showRoleForm, setShowRoleForm ] = useState({ show: false, formType: '' })
@@ -31,6 +38,8 @@ const UserManagement = () => {
 
   const [ selectedUser, setSelectedUser ] = useState(null)
   const [ selectedRole, setSelectedRole ] = useState(null)
+
+  const [ filterParameter, setFilterParameter ] = useState({ name:'', username: '', role:'', right:'', userActive: 'All', roleActive: 'All' })
 
   // Query implementation
   const queryClient = useQueryClient()
@@ -51,6 +60,7 @@ const UserManagement = () => {
     onSuccess: (newRight) => {
       const roles = queryClient.getQueryData('rights')
       queryClient.setQueryData('rights', roles.concat(newRight))
+      setSelectedRole({ roleName:'', active: true, rights:[] })
       setNotification({ message: 'Right added successfully!', type: 'success', time: 3 })
     },
     onError: () => {
@@ -61,6 +71,14 @@ const UserManagement = () => {
   const newUserMutation = useMutation(userServices.createUser, {
     onSuccess: () => {
       queryClient.invalidateQueries('users')
+      setSelectedUser({
+        firstName:'',
+        lastName:'',
+        username:'',
+        password:'',
+        active: true,
+        roles:[]
+      })
       setNotification({ message: 'User added successfully!', type: 'success', time: 3 })
     },
     onError: () => {
@@ -94,6 +112,63 @@ const UserManagement = () => {
   const roleResults = useQuery('roles',roleServices.getRoles, { refetchOnWindowFocus: false })
   const rightResults = useQuery('rights',rightServices.getRights, { refetchOnWindowFocus: false })
 
+  // filter Objects
+  const handleFilter = (filterParams) => {
+    setFilterParameter(filterParams)
+  }
+
+  let filteredRights = rightResults.data
+  let filteredRoles = roleResults.data
+  let filteredUsers = userResults.data
+
+
+  switch (filterParameter.userActive) {
+  case 'yes':
+    filteredUsers = filteredUsers.filter( user => user.active === true )
+    break
+  case 'no':
+    filteredUsers = filteredUsers.filter( user => user.active === false )
+    break
+  case 'all':
+    filteredUsers
+    break
+  default:
+    filteredUsers
+  }
+
+  switch (filterParameter.roleActive) {
+  case 'yes':
+    filteredRoles = filteredRoles.filter( role => role.active === true )
+    break
+  case 'no':
+    filteredRoles = filteredRoles.filter( role => role.active === false )
+    break
+  case 'all':
+    filteredRoles
+    break
+  default:
+    filteredRoles
+  }
+
+  if ( filterParameter.right ) {
+    filteredRights = filteredRights.filter(right => right.right.toLowerCase().includes(filterParameter.right.toLowerCase()))
+    filteredRoles = filteredRoles.filter(role => filteredRights.some(right => role.rights.some(roleRight => roleRight.right === right.right)))
+    filteredUsers = filteredUsers.filter(user => filteredRoles.some(role => user.roles.some(userRole => userRole.roleName === role.roleName)))
+  } else {
+    filteredRights = rightResults.data
+  }
+  if ( filterParameter.role  || filterParameter.roleActive !=='All' ) {
+    filteredRoles = filteredRoles.filter(role => role.roleName.toLowerCase().includes(filterParameter.role.toLowerCase()) )
+    filteredUsers = filteredUsers.filter(user => filteredRoles.some(role => user.roles.some(userRole => userRole.roleName === role.roleName)))
+  }
+  if ( filterParameter.name ) {
+    filteredUsers = filteredUsers.filter(user => user.firstName.toLowerCase().includes(filterParameter.name) ||
+      user.lastName.toLowerCase().includes(filterParameter.name))
+  }
+  if ( filterParameter.username ) {
+    filteredUsers = filteredUsers.filter(user => user.username.toLowerCase().includes(filterParameter.username.toLowerCase()))
+  }
+
   // Role form Submit
   const handleRoleFormSubmit = (newRoleData) => {
     if (showRoleForm.formType === 'ADD') {
@@ -122,39 +197,49 @@ const UserManagement = () => {
   }
 
   return(
-    <Grid container spacing={2} >
-      <Grid item xs={5}>
-        <Paper>
-          <Grid container spacing={2} >
-            <Grid item xs={7}>
-              { userResults.isLoading && <LinearProgress sx={{ margin: 1 }}/> }
-              { userResults.data && <UserList users={userResults.data} displayUserForm={setShowUserForm} selectUser={setSelectedUser} />}
+    <Paper sx={{ marginTop: 1, border:'solid',  borderRadius: 2, borderColor:'#1976d270' }} bgcolor={'#1976d270'} >
+      <Box display='flex' justifyContent='space-between' alignItems='center'
+        borderRadius={2}  bgcolor={'#1976d270'}
+      >
+        <Grid container bgcolor={'#1976d2d9'} color={'white'} justifyContent={'space-between'} flexDirection={'row'} >
+          <Typography margin={1} >USER CONFIGURATION</Typography>
+          <Button variant='outLined' onClick={() => navigate('/config')} size='small' >
+          close
+          </Button>
+        </Grid>
+      </Box>
+      <Grid container spacing={1}>
+        <Grid item xs={6}>
+          <Paper >
+            <Filter HandleFilter={handleFilter}/>
+            <Grid container spacing={1} height={'600px'}>
+              <Grid item xs={7}>
+                { userResults.isLoading && <LinearProgress sx={{ margin: 1 }}/> }
+                { userResults.data && <UserList users={filteredUsers} allUsers={userResults.data.length} displayUserForm={setShowUserForm} selectUser={setSelectedUser} />}
+              </Grid>
+              <Grid item xs={5}>
+                <Stack direction={'column'}>
+                  <Box height={'50%'} maxHeight={'300px'}>
+                    { roleResults.isLoading && <LinearProgress sx={{ margin: 1 }}/> }
+                    { roleResults.data && <RoleList roles={filteredRoles} allRoles={roleResults.data.length} displayRoleForm={setShowRoleForm} selectRole={setSelectedRole}/>}
+                  </Box>
+                  <Box height={'50%'} maxHeight={'300px'} marginTop={1}>
+                    { rightResults.isLoading && <LinearProgress sx={{ margin: 1 }}/> }
+                    { rightResults.data && <RightList rights={filteredRights} allRights={rightResults.data.length} displayForm={setShowNewRight}/>}
+                  </Box>
+                </Stack>
+              </Grid>
             </Grid>
-            <Grid item xs={5}>
-              <Stack direction={'column'}>
-                <Paper>
-                  { roleResults.isLoading && <LinearProgress sx={{ margin: 1 }}/> }
-                  { roleResults.data && <RoleList roles={roleResults.data} displayRoleForm={setShowRoleForm} selectRole={setSelectedRole}/>}
-                </Paper>
-                <Paper>
-                  { rightResults.isLoading && <LinearProgress sx={{ margin: 1 }}/> }
-                  { rightResults.data && <RightList rights={rightResults.data} displayForm={setShowNewRight}/>}
-                </Paper>
-              </Stack>
-            </Grid>
-          </Grid>
-        </Paper>
+          </Paper>
 
-      </Grid>
-      <Grid item xs={7}>
-        <Paper>
+        </Grid>
+        <Grid item xs={6} >
           { showRoleForm.show && <RoleForm roleData={selectedRole} displayRoleForm={setShowRoleForm} submitHandler={handleRoleFormSubmit} rightList={rightResults.data} formType={showRoleForm.formType}/> }
-          { showNewRight && <AddRight addNewRight={createRight} displayForm={setShowNewRight} /> }
+          { showNewRight && <RightForm addNewRight={createRight} displayForm={setShowNewRight} /> }
           { showUserForm.show && <UserForm userData={selectedUser} formType={showUserForm.formType} submitHandler={handleUserFormSubmit} displayUserForm={setShowUserForm} roleList={roleResults.data.filter((role) => role.active)} /> }
-        </Paper>
+        </Grid>
       </Grid>
-    </Grid>
-
+    </Paper>
   )
 }
 

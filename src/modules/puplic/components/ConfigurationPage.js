@@ -8,27 +8,29 @@ import {
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts'
 
 
-const ConfigurationPage = () => {
+const ConfigurationPage = ({ user }) => {
   const buttonStyle = {
     width: 500,
     height: 150,
     fontSize: '2rem',
     backgroundColor: '#1976d2',
-    //borderColor: '#1976d2',
-    //borderWidth: '5px',
-    //borderStyle: 'solid',
     color: '#FFFFFF',
   }
 
+  const showConfigUser = user && user.roles.includes('Admin')
+
   return(
-    <Grid container justifyContent='space-between'>
+    <Grid container justifyContent='space-between' height={700}>
       <Grid item margin={5}>
-        <Button
-          component={Link} to='/userManagement'
-          style={buttonStyle}
-          startIcon={<ManageAccountsIcon style={{ fontSize: '80px' }}/>}
-        >User Management
-        </Button>
+        { showConfigUser &&
+          <Button
+            component={Link} to='/userManagement'
+            style={buttonStyle}
+            startIcon={<ManageAccountsIcon style={{ fontSize: '80px' }}/>}
+          >
+            User Management
+          </Button>
+        }
       </Grid>
     </Grid>
   )

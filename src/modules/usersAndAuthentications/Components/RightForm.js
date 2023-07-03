@@ -8,7 +8,7 @@ import {
   Paper
 } from '@mui/material'
 
-const AddRight = ({ addNewRight, displayForm }) => {
+const RightForm = ({ addNewRight, displayForm }) => {
 
   const [ formValues, setFormValues ] = useState({ right:'', relatedModule: '' })
 
@@ -32,7 +32,7 @@ const AddRight = ({ addNewRight, displayForm }) => {
   }
 
   return(
-    <Paper elevation={5} sx={{ margin: 2, borderRadius: 3 }}>
+    <Paper elevation={5} sx={{ borderRadius: 3, marginBottom: 1  }}>
       <Box display='flex' justifyContent='space-between' alignItems='center'
         border={'solid'} borderColor={'#1976d270'} borderRadius={3}  margin={0}
         bgcolor={'#1976d270'}
@@ -76,4 +76,4 @@ const AddRight = ({ addNewRight, displayForm }) => {
   )
 }
 
-export default AddRight
+export default RightForm

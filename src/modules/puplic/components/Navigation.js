@@ -6,7 +6,6 @@ import ConfigIcon from '@mui/icons-material/SettingsSuggest'
 
 import UserProfile from './UserProfile'
 
-
 const Navigation = ({ user }) => {
 
   return (
@@ -48,9 +47,6 @@ const Navigation = ({ user }) => {
               >
                 CONFIG
               </Typography>
-            </Button>
-            <Button color='inherit' component={Link} to='/bom'>
-              BOM
             </Button>
           </Grid>
           <Grid item>

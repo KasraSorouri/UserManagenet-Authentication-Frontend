@@ -8,30 +8,27 @@ import {
   TableContainer,
   TableHead,
   TableSortLabel,
-  TablePagination,
   Box,
   TableRow,
-  Stack,
   Checkbox,
   IconButton,
   Typography,
+  Grid,
 } from '@mui/material'
 
 import AddIcon from '@mui/icons-material/Add'
+import EditIcon from '@mui/icons-material/Edit'
+
 import { visuallyHidden } from '@mui/utils'
 
-import TablePaginationActions from '../../../utils/tablePaginationActions'
 import Notification from '../../../utils/Notification'
 
 
-const RoleList = ({ roles, displayRoleForm, selectRole }) => {
+const RoleList = ({ roles, allRoles, displayRoleForm, selectRole }) => {
 
-  const [ page, setPage ] = useState(0)
   const [ sort, setSort ] = useState({ sortItem: 'stationId' , sortOrder: 1 })
   const order = sort.sortOrder === 1 ? 'asc' : 'desc'
   const orderBy = sort.sortItem
-
-  const filteredRoles = []
 
   const showEditRole = (id) => {
     const roleData = roles.filter((r) => r.id === id )[0]
@@ -63,16 +60,6 @@ const RoleList = ({ roles, displayRoleForm, selectRole }) => {
     }
     return (
       <TableHead>
-        <TableRow style={{ height: '8px', }} >
-          <TableCell colSpan={2} sx={{ backgroundColor: '#1976d2', color: 'white', fontWeight: 'bold' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Typography align='center'>ROLES LIST</Typography>
-              <IconButton onClick={addNewRole} style={{ height: '16px', width: '16px', color:'white' }}>
-                <AddIcon />
-              </IconButton>
-            </div>
-          </TableCell>
-        </TableRow>
         <TableRow>
           {columnHeader.map((column) => (
             <TableCell
@@ -114,16 +101,17 @@ const RoleList = ({ roles, displayRoleForm, selectRole }) => {
 
   return(
     <div>
-      <Stack direction={'row'} columnGap={7}>
-        {roles.length !== filteredRoles.length ?
-          <Box marginTop={2.5}>
-            <Notification text={`${filteredRoles.length} of ${roles.length} is filtered.`} time={0} />
-          </Box>
-          : null
-        }
-      </Stack>
       <Paper>
-        <TableContainer sx={{ height: 250 }}>
+        <Grid container bgcolor={'#1976d2d9'} color={'white'} justifyContent={'space-between'} flexDirection={'row'} >
+          <Typography margin={1} >ROLE LIST</Typography>
+          <Typography margin={1} >{roles.length} of {allRoles} roles</Typography>
+          <div style={{ margin: '10px' }} >
+            <IconButton onClick={addNewRole} style={{ height: '16px', width: '16px', color:'white' }}>
+              <AddIcon />
+            </IconButton>
+          </div>
+        </Grid>
+        <TableContainer sx={{ maxHeight: '250Px' }}>
           <Table stickyHeader aria-label='sticky table' size='small'>
             <EnhancedTableHead
               order={order}
@@ -133,12 +121,17 @@ const RoleList = ({ roles, displayRoleForm, selectRole }) => {
             <TableBody>
               { roles.map((role) => {
                 return(
-                  <TableRow hover role='checkbox' tabIndex={-1} key={role.id} onClick={() => showEditRole(role.id)} >
+                  <TableRow hover role='checkbox' tabIndex={-1} key={role.id}>
                     <TableCell align='left'>
                       {role.roleName}
                     </TableCell>
-                    <TableCell align='center' >
-                      <Checkbox checked={role.active} style={{ height: '16px', width: '16px' }} />
+                    <TableCell align='center'>
+                      <Box justifyContent={'space-between'} >
+                        <Checkbox checked={role.active} style={{ height: '16px', width: '16px' }} />
+                        <IconButton onClick={() => showEditRole(role.id)} style={{ height: '12px', width: '12px', marginLeft: 25 , color:'#1976d2d9' }}>
+                          <EditIcon />
+                        </IconButton>
+                      </Box>
                     </TableCell>
                   </TableRow>
                 )
@@ -146,16 +139,6 @@ const RoleList = ({ roles, displayRoleForm, selectRole }) => {
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5]}
-          component='div'
-          count={roles.length}
-          rowsPerPage={5}
-          page={page}
-          onPageChange={(event, newPage) => setPage(newPage)}
-          //onRowsPerPageChange={(event) => setRows(event.target.value)}
-          ActionsComponent={TablePaginationActions}
-        />
       </Paper>
     </div>
   )

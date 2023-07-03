@@ -8,33 +8,35 @@ import {
   TableContainer,
   TableHead,
   TableSortLabel,
-  TablePagination,
+  //TablePagination,
   Box,
   TableRow,
-  Stack,
   IconButton,
   Typography,
+  Grid,
 } from '@mui/material'
 
 import AddIcon from '@mui/icons-material/Add'
 import { visuallyHidden } from '@mui/utils'
 
-import TablePaginationActions from '../../../utils/tablePaginationActions'
+//import TablePaginationActions from '../../../utils/tablePaginationActions'
 import Notification from '../../../utils/Notification'
 
-const RightList = ({ rights, displayForm }) => {
+const RightList = ({ rights, allRights, displayForm }) => {
 
-  const [ filteredRights, setFilteredRights ] = useState([])
-  const [ page, setPage ] = useState(0)
+  //const [ filteredRights, setFilteredRights ] = useState([])
+  //const [ page, setPage ] = useState(0)
   //const [ rows, setRows ] = useState(10)
   const [ sort, setSort ] = useState({ sortItem: 'stationId' , sortOrder: 1 })
   //const [ filterParameters, setFilterParameters ] = useState()
   const order = sort.sortOrder === 1 ? 'asc' : 'desc'
   const orderBy = sort.sortItem
 
+  /*
   const rightFilterHandler = () => {
     return setFilteredRights([])
   }
+  */
 
   const addNewRight = () => {
     displayForm(true)
@@ -53,16 +55,6 @@ const RightList = ({ rights, displayForm }) => {
     }
     return (
       <TableHead>
-        <TableRow style={{ height: '8px', }} >
-          <TableCell colSpan={2} sx={{ backgroundColor: '#1976d2', color: 'white', fontWeight: 'bold' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Typography align='center'>RIGHT LIST</Typography>
-              <IconButton onClick={addNewRight} style={{ height: '16px', width: '16px', color:'white' }}>
-                <AddIcon />
-              </IconButton>
-            </div>
-          </TableCell>
-        </TableRow>
         <TableRow>
           {columnHeader.map((column) => (
             <TableCell
@@ -104,17 +96,17 @@ const RightList = ({ rights, displayForm }) => {
 
   return(
     <div>
-      <Stack direction={'row'} columnGap={7}>
-        <Typography variant='h5'>Rights List</Typography>
-        {rights.length !== filteredRights.length ?
-          <Box marginTop={2.5}>
-            <Notification text={`${filteredRights.length} of ${rights.length} is filtered.`} time={0} />
-          </Box>
-          : null
-        }
-      </Stack>
       <Paper>
-        <TableContainer sx={{ height: 200 }}>
+        <Grid container bgcolor={'#1976d2d9'} color={'white'} justifyContent={'space-between'} flexDirection={'row'} >
+          <Typography margin={1} >RIGHT LIST</Typography>
+          <Typography margin={1} >{rights.length} of {allRights} rights</Typography>
+          <div style={{ margin: '10px' }} >
+            <IconButton onClick={addNewRight} style={{ height: '16px', width: '16px', color:'white' }}>
+              <AddIcon />
+            </IconButton>
+          </div>
+        </Grid>
+        <TableContainer sx={{ maxHeight: '250Px' }}>
           <Table stickyHeader aria-label='sticky table' size='small'>
             <EnhancedTableHead
               order={order}
@@ -124,7 +116,7 @@ const RightList = ({ rights, displayForm }) => {
             <TableBody>
               { rights.map((right) => {
                 return(
-                  <TableRow hover role='checkbox' tabIndex={-1} key={right.id} onClick={ rightFilterHandler } >
+                  <TableRow hover role='checkbox' tabIndex={-1} key={right.id} >
                     <TableCell align='left' >
                       {right.right}
                     </TableCell>
@@ -137,16 +129,6 @@ const RightList = ({ rights, displayForm }) => {
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5]}
-          component='div'
-          count={rights.length}
-          rowsPerPage={5}
-          page={page}
-          onPageChange={(event, newPage) => setPage(newPage)}
-          //onRowsPerPageChange={(event) => setRows(event.target.value)}
-          ActionsComponent={TablePaginationActions}
-        />
       </Paper>
     </div>
   )

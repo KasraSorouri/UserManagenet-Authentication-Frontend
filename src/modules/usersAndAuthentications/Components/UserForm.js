@@ -52,11 +52,10 @@ const UserForm = ({ userData, formType, submitHandler, displayUserForm, roleList
     event.preventDefault()
     const newUser = { ...formValues, roles: formValues.roles.map(role => role.id) }
     submitHandler(newUser)
-    formType === 'ADD' && setFormValues(userData)
   }
 
   return(
-    <Paper elevation={5} sx={{ margin: 2, borderRadius: 3 }}>
+    <Paper elevation={5} sx={{ borderRadius: 3 }}>
       <Box display='flex' justifyContent='space-between' alignItems='center'
         border={'solid'} borderColor={'#1976d270'} borderRadius={3} bgcolor={'#1976d270'}
       >

@@ -52,11 +52,10 @@ const RoleForm = ({ formType, roleData, submitHandler, displayRoleForm, rightLis
     event.preventDefault()
     const newRole = { ...formValues, rights: formValues.rights.map(right => right.id) }
     submitHandler(newRole)
-    formType === 'ADD' && setFormValues(roleData)
   }
 
   return(
-    <Paper elevation={5} sx={{ margin: 2, borderRadius: 3 }}>
+    <Paper elevation={5} sx={{ borderRadius: 3, marginBottom: 1 }}>
       <Box display='flex' justifyContent='space-between' alignItems='center'
         border={'solid'} borderColor={'#1976d270'} borderRadius={3}  margin={0}
         bgcolor={'#1976d270'}
@@ -128,7 +127,7 @@ const RoleForm = ({ formType, roleData, submitHandler, displayRoleForm, rightLis
                       label='Rights'
                       placeholder='Add right'
                       size='small'
-                      sx={{ maxWidth: '250px' }}
+                      sx={{ maxWidth: '250px', marginBottom: 1 }}
                     />
                   )}
                 />

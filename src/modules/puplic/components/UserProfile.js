@@ -26,7 +26,6 @@ const UserProfile = ({ user }) => {
   const open = Boolean(anchorEl)
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget)
-    console.log('target ->', event.currentTarget )
   }
   const handleClose = () => {
     setAnchorEl(null)

@@ -34,7 +34,7 @@ function App() {
         <Routes>
           <Route path='/' element={<HomePage />} />
           <Route path='/login' element={<SignIn />} />
-          <Route path='/Config' element={<ConfigurationPage />} />
+          <Route path='/Config' element={<ConfigurationPage user={user} />} />
           <Route path='/userManagement'element={<UserManagement />} />
         </Routes>
       </Router>
